@@ -1,0 +1,43 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@headlessui/react": "^2.2.0",
+    "@tailwindcss/postcss": "^4.0.9",
+    "axios": "^1.8.1",
+    "bad-words": "^4.0.0",
+    "firebase": "^11.5.0",
+    "framer-motion": "^12.6.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
+    "lucide-react": "^0.486.0",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.48",
+    "postcss": "^8.5.3",
+    "react": "^18.2.0",
+    "react-big-calendar": "^1.18.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.2.0",
+    "react-toastify": "^11.0.5",
+    "recharts": "^2.15.3",
+    "socket.io-client": "^4.8.1",
+    "tailwindcss": "^4.0.9"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.1.0",
+    "vite": "^4.1.0"
+  }
+}
