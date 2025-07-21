@@ -1,4 +1,3 @@
-
 import Slider from "../components/Slider";
 import Header from "../layouts/Header";
 //import Header from "../layouts/header";
@@ -14,7 +13,6 @@ const Home = () => {
       <Slider />
       <ServiceSection />
       <End />
-     
     </div>
   );
 };

@@ -8,7 +8,6 @@ const guestSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phoneNumber: String,
   gender: String,
-  password: String,
   status: { type: String, default: "Active" },
   role: { type: String, default: "User" },
 });

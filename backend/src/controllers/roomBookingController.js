@@ -20,11 +20,11 @@ export const checkRoomAvailability = async (req, res) => {
     }
 
     const roomStart = new Date(checkin);
-    roomStart.setHours(0, 0, 0, 0); 
+    roomStart.setHours(0, 0, 0, 0);
     console.log("roomStart:", roomStart);
 
     const roomEnd = new Date(checkout);
-    roomEnd.setHours(0, 0, 0, 0); 
+    roomEnd.setHours(0, 0, 0, 0);
     console.log("roomEnd:", roomEnd);
 
     const reservedRooms = await RoomBooking.find({
@@ -34,17 +34,17 @@ export const checkRoomAvailability = async (req, res) => {
 
     for (let reservedRoom of reservedRooms) {
       const existingRoomStart = new Date(reservedRoom.checkin);
-      existingRoomStart.setHours(0, 0, 0, 0); 
+      existingRoomStart.setHours(0, 0, 0, 0);
       console.log("existingRoomStart:", existingRoomStart);
 
       const existingRoomEnd = new Date(reservedRoom.checkout);
-      existingRoomEnd.setHours(0, 0, 0, 0); 
+      existingRoomEnd.setHours(0, 0, 0, 0);
       console.log("existingRoomEnd:", existingRoomEnd);
 
       if (
-        (roomStart >= existingRoomStart && roomStart < existingRoomEnd) || 
+        (roomStart >= existingRoomStart && roomStart < existingRoomEnd) ||
         (roomEnd > existingRoomStart && roomEnd <= existingRoomEnd) ||
-        (roomStart <= existingRoomStart && roomEnd >= existingRoomEnd) 
+        (roomStart <= existingRoomStart && roomEnd >= existingRoomEnd)
       ) {
         console.log("Room booking conflict detected");
         return res.json({
@@ -87,7 +87,7 @@ export const roomBooking = async (req, res) => {
       nationality,
       kitchen,
       totalAmount,
-      assignedRoomNos, 
+      assignedRoomNos,
     } = req.body;
 
     /* const normalizedCheckin = new Date(checkin);

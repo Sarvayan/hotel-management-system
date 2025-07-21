@@ -8,24 +8,49 @@ export const placeOrder = async (req, res) => {
 
     const { orderItems, totalPrice } = req.body;
 
-    /* if (!email) {
-      return res.send("You have to first signup/login first");
-    } */
+    if (!email) {
+      return res.status(401).send("You must be logged in to place an order.");
+    }
 
-    const newOrder = new Order({
-      email,
-      orderItems: orderItems.map((item) => ({
-        name: item.name,
-        quantity: item.quantity,
-      })),
-      totalPrice,
-    });
+    const existingOrder = await Order.findOne({ email });
+    console.log(existingOrder)
 
-    await newOrder.save();
-    res.send(true);
+    if (existingOrder) {
+      const updatedItems = [...existingOrder.orderItems];
+
+      orderItems.forEach((newItem) => {
+        const index = updatedItems.findIndex(
+          (item) => item.name === newItem.name
+        );
+
+        if (index !== -1) {
+          updatedItems[index].quantity += newItem.quantity;
+        } else {
+          updatedItems.push({ name: newItem.name, quantity: newItem.quantity });
+        }
+      });
+
+      existingOrder.orderItems = updatedItems;
+      existingOrder.totalPrice += totalPrice;
+
+      await existingOrder.save();
+      return res.send(true);
+    } else {
+      const newOrder = new Order({
+        email,
+        orderItems: orderItems.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+        })),
+        totalPrice,
+      });
+
+      await newOrder.save();
+      return res.send(true);
+    }
   } catch (error) {
     console.error("Error placing order:", error);
-    res.send("Internal server error");
+    res.status(500).send("Internal server error");
   }
 };
 

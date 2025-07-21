@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import service1 from "../assets/images/service1.png";
 import service2 from "../assets/images/service2.jpg";
@@ -10,11 +9,12 @@ const ServiceSection = () => {
       id: 1,
       image: service1,
       title: "Luxury Accommodations",
-      description: "Experience unparalleled comfort in our exquisite rooms and suites",
+      description:
+        "Experience unparalleled comfort in our exquisite rooms and suites",
       linkText: "Book Your Room",
       url: "/roombooking",
       bgColor: "bg-[#d9232e]",
-      hoverColor: "hover:bg-[#b51e27]"
+      hoverColor: "hover:bg-[#b51e27]",
     },
     {
       id: 2,
@@ -24,8 +24,8 @@ const ServiceSection = () => {
       linkText: "Plan Your Event",
       url: "/eventbooking",
       bgColor: "bg-[#1a365d]",
-      hoverColor: "hover:bg-[#12283d]"
-    }
+      hoverColor: "hover:bg-[#12283d]",
+    },
   ];
 
   return (
@@ -72,7 +72,7 @@ const ServiceSection = () => {
 
               {/* Service Content */}
               <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 text-white">
-                <motion.h3 
+                <motion.h3
                   className="text-2xl md:text-3xl font-bold mb-2"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ const ServiceSection = () => {
                 >
                   {service.title}
                 </motion.h3>
-                <motion.p 
+                <motion.p
                   className="text-lg md:text-xl mb-6 opacity-90"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -119,8 +119,6 @@ const ServiceSection = () => {
             </motion.div>
           ))}
         </div>
-
-        
       </div>
     </section>
   );

@@ -1,14 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import gallery2 from "../assets/images/gallery2.jpg";
 
 const Header = () => {
-  const navigate = useNavigate();
-
-  const handleDashboardNavigation = () => {
-    navigate("/guestdashboard");
-  };
-
   return (
     <header className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Gradient Overlay */}

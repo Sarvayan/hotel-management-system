@@ -3,7 +3,7 @@ import { MdEmail } from "react-icons/md";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-[#d9232e] to-[#a51b23] text-white pt-12 pb-6">
+    <footer className="bg-gradient-to-r from-[#d9232e] to-[#a51b23] text-white pt-12 pb-6 my-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Info */}
@@ -81,7 +81,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center">
                 <MdEmail className="mr-3 flex-shrink-0 text-base" />
-                <span className="text-gray-100 text-sm">info@anuthamavilla.com</span>
+                <span className="text-gray-100 text-sm">info@wearevilla.com</span>
               </li>
               <li className="flex items-center">
                 <FaFax className="mr-3 flex-shrink-0" />

@@ -1,137 +1,39 @@
 import bcrypt from "bcrypt";
 import Guest from "../models/guestModel.js";
 
-export const signupGuest = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    const newGuest = new Guest({
-      email,
-      password: hashedPassword,
-      status: "Active",
-      role: "User",
-    });
-
-    await newGuest.save();
-    console.log("Guest Added To The Database Successfully");
-    res.send(true);
-  } catch (error) {
-    console.error("Error during signup:", error);
-    res.send("Error during signup");
-  }
-};
-
-export const loginGuest = (req, res) => {
-  console.log("Received email:", req.body.email);
-  console.log("Received password:", req.body.password);
-
-  Guest.findOne({ email: req.body.email })
-    .select("+password")
-    .then((user) => {
-      if (!user) {
-        console.log("User not found");
-        return res
-          .status(404)
-          .send({ success: false, message: "User not found" });
-      }
-
-      console.log("Retrieved email:", user.email);
-      bcrypt
-        .compare(req.body.password, user.password)
-        .then((match) => {
-          if (!match) {
-            console.log("Incorrect password");
-            return res
-              .status(401)
-              .send({ success: false, message: "Incorrect password" });
-          }
-
-          res.cookie("email", user.email, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "Lax",
-          });
-
-          console.log("User found and authenticated");
-          console.log(req.cookies.email);
-
-          return res.status(200).send({
-            success: true,
-            message: "Login successful",
-            user: {
-              role: user.role, // Assuming user object has a role field
-            },
-          });
-        })
-        .catch((err) => {
-          console.error("Error comparing passwords:", err);
-          res
-            .status(500)
-            .send({ success: false, message: "Error comparing passwords" });
-        });
-    })
-    .catch((err) => {
-      console.error("Database operation was unsuccessful:", err);
-      res.status(500).send({
-        success: false,
-        message: "Database operation was unsuccessful",
-      });
-    });
-};
-
-export const otpGuest = (req, res) => {
-  console.log("Received email:", req.body.email);
-
-  Guest.findOne({ email: req.body.email })
-    .then((user) => {
-      if (!user) {
-        console.log("User not found");
-        return res.send("User not found");
-      } else {
-        res.send(true);
-      }
-
-      console.log("Retrieved email:", user.email);
-    })
-    .catch((err) => {
-      console.error("Database operation was unsuccessful:", err);
-      res.send("Database operation was unsuccessful");
-    });
-};
-
 export const guestRegistration = async (req, res) => {
   try {
     const email = req.cookies.email;
 
     if (!email) {
-      return res.send("Unauthorized access");
+      return res.status(401).send("Unauthorized access: Email cookie missing");
     }
 
-    const existingGuest = await Guest.findOne({ email });
+    const { fname, lname, address, nic, phoneNumber, gender } = req.body;
 
-    if (!existingGuest) {
-      return res.send("Guest not found");
+    if (!fname || !lname || !address || !nic || !phoneNumber || !gender) {
+      return res.status(400).send("All fields are required");
     }
 
-    const { fname, lname, address, nic, phonenum, gender } = req.body;
+    const newGuest = new Guest({
+      email,
+      fname,
+      lname,
+      address,
+      nic,
+      phoneNumber,
+      gender,
+      status: "Active",
+      role: "User",
+    });
 
-    existingGuest.fname = fname;
-    existingGuest.lname = lname;
-    existingGuest.address = address;
-    existingGuest.nic = nic;
-    existingGuest.phoneNumber = phonenum;
-    existingGuest.gender = gender;
+    await newGuest.save();
 
-    // Save the updated guest details
-    await existingGuest.save();
-
-    console.log("Guest details updated successfully:", email);
-    res.send(true);
+    console.log("Guest registered successfully:", email);
+    res.status(201).send(true);
   } catch (err) {
-    console.error("Error updating guest details:", err);
-    res.send("Guest update failed");
+    console.error("Error registering guest:", err);
+    res.status(500).send("Guest registration failed");
   }
 };
 
@@ -300,7 +202,7 @@ export const checkGuest = async (req, res) => {
     }
 
     const existingGuest = await Guest.findOne({ email: email });
-    console.log(existingGuest.fname);
+
     if (existingGuest.fname) {
       console.log("false");
       return res.send(true);
