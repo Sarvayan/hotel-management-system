@@ -51,12 +51,9 @@ import Logout from "./pages/Logout";
 import Report from "./pages/Report";
 
 import RoleContext from "./components/RoleContext";
-import { ThemeProvider, useTheme } from "./components/ThemeContext";
-import DarkModeToggle from "./components/DarkModeToggle";
 
-function MyApp() {
+function App() {
   const [userRole, setUserRole] = useState(null);
-  const { isDarkMode, toggleDarkMode } = useTheme();
 
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
@@ -68,90 +65,67 @@ function MyApp() {
   return (
     <RoleContext.Provider value={{ userRole, setUserRole }}>
       <BrowserRouter>
-        <div
-          className={`min-h-screen ${
-            isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"
-          }`}
-        >
-          {userRole === "Admin" ? (
-            <AdminNavbar />
-          ) : userRole === "User" ? (
-            <UserNavbar />
-          ) : null}
+        {userRole === "admin" ? (
+          <AdminNavbar />
+        ) : userRole === "user" ? (
+          <UserNavbar />
+        ) : null}
 
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            toastClassName={userRole === "Admin" ? "admin-toast" : undefined}
-          />
-          <div className="pt-25">
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
+        <ToastContainer />
 
-              <Route path="/signup" element={<Signup />} />
-              <Route
-                path="/login"
-                element={<Login setUserRole={setUserRole} />}
-              />
-              <Route path="/forgotpassword" element={<ForgotPassword />} />
-              <Route path="/otp" element={<OTP />} />
-              <Route path="/newpassword" element={<NewPassword />} />
+        <div className="pt-25">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
 
-              {/* User & Admin Routes */}
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login setUserRole={setUserRole} />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/otp" element={<OTP />} />
+            <Route path="/newpassword" element={<NewPassword />} />
 
-              <Route path="/about" element={<About />} />
-              <Route path="/contactus" element={<Contactus />} />
-              <Route
-                path="/guestregistration"
-                element={<GuestRegistration />}
-              />
-              <Route path="/home" element={<Home />} />
-              <Route path="/guestdashboard" element={<GuestDashboard />} />
-              <Route path="/roombooking" element={<RoomBooking />} />
-              <Route path="/eventbooking" element={<EventBooking />} />
-              <Route path="/room" element={<Room />} />
-              <Route path="/menu" element={<Menu />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/addreview" element={<AddReview />} />
-              <Route path="/showreview" element={<ShowReview />} />
-              <Route path="/addfeedback" element={<AddFeedback />} />
-              <Route path="/addproduct" element={<AddProduct />} />
-              <Route path="/showproduct" element={<ShowProduct />} />
-              <Route path="/viewdetails/:id" element={<ViewDetails />} />
-              <Route path="/guestlist" element={<GuestList />} />
-              <Route path="/blacklistaccount" element={<BlacklistAccount />} />
-              <Route path="/bookingrequest" element={<BookingRequest />} />
-              <Route path="/bookinghistory" element={<BookingHistory />} />
-              <Route path="/manageroom" element={<ManageRoom />} />
-              <Route path="/updateroom" element={<UpdateRoom />} />
-              <Route path="/addevent" element={<AddEvent />} />
-              <Route path="/manageevent" element={<ManageEvent />} />
-              <Route path="/updateevent" element={<UpdateEvent />} />
-              <Route path="/updateprofile" element={<ProfileUpdate />} />
-              <Route path="/orderhistory" element={<OrderHistory />} />
-              <Route path="/checkin" element={<Checkin />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/cleaningstatus" element={<CleaningStatus />} />
-              <Route path="/adminlogin" element={<AdminLogin />} />
-              <Route path="/adminsignup" element={<AdminSignup />} />
-              <Route path="/logout" element={<Logout />} />
-              <Route path="/adminhome" element={<AdminHome />} />
-              <Route path="/report" element={<Report />} />
-            </Routes>
+            {/* User & Admin Routes */}
 
-            <Footer />
-          </div>
+            <Route path="/about" element={<About />} />
+            <Route path="/contactus" element={<Contactus />} />
+            <Route path="/guestregistration" element={<GuestRegistration />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/guestdashboard" element={<GuestDashboard />} />
+            <Route path="/roombooking" element={<RoomBooking />} />
+            <Route path="/eventbooking" element={<EventBooking />} />
+            <Route path="/room" element={<Room />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/addreview" element={<AddReview />} />
+            <Route path="/showreview" element={<ShowReview />} />
+            <Route path="/addfeedback" element={<AddFeedback />} />
+            <Route path="/addproduct" element={<AddProduct />} />
+            <Route path="/showproduct" element={<ShowProduct />} />
+            <Route path="/viewdetails/:id" element={<ViewDetails />} />
+            <Route path="/guestlist" element={<GuestList />} />
+            <Route path="/blacklistaccount" element={<BlacklistAccount />} />
+            <Route path="/bookingrequest" element={<BookingRequest />} />
+            <Route path="/bookinghistory" element={<BookingHistory />} />
+            <Route path="/manageroom" element={<ManageRoom />} />
+            <Route path="/updateroom" element={<UpdateRoom />} />
+            <Route path="/addevent" element={<AddEvent />} />
+            <Route path="/manageevent" element={<ManageEvent />} />
+            <Route path="/updateevent" element={<UpdateEvent />} />
+            <Route path="/updateprofile" element={<ProfileUpdate />} />
+            <Route path="/orderhistory" element={<OrderHistory />} />
+            <Route path="/checkin" element={<Checkin />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/cleaningstatus" element={<CleaningStatus />} />
+            <Route path="/adminlogin" element={<AdminLogin />} />
+            <Route path="/adminsignup" element={<AdminSignup />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/adminhome" element={<AdminHome />} />
+            <Route path="/report" element={<Report />} />
+          </Routes>
+
+          <Footer />
         </div>
       </BrowserRouter>
     </RoleContext.Provider>
-  );
-}
-
-function App() {
-  return (
-    <ThemeProvider>
-      <MyApp />
-    </ThemeProvider>
   );
 }
 

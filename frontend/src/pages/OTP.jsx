@@ -1,224 +1,153 @@
-import React, { useState } from "react";
-import { Phone, MessageSquare, ArrowRight } from "lucide-react";
-import {
-  auth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "../firebaseConfig"; // Import from firebase config
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import { motion as Motion } from "framer-motion";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
-  const navigate = useNavigate();
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
-  const [confirmationResult, setConfirmationResult] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [phoneErrorMessage, setPhoneErrorMessage] = useState("");
-  const [otpErrorMessage, setOtpErrorMessage] = useState("");
-  const [isOtpSent, setIsOtpSent] = useState(false);
+const OTP = () => {
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Phone regex to validate international phone number format
-  const phoneRegex = /^\+[1-9]\d{1,14}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const setupRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: (response) => {
-            console.log("reCAPTCHA verified:", response);
-          },
-        }
-      );
-    }
+  const showToast = (message, type = "error") => {
+    toast[type](message, {
+      position: "top-center",
+      autoClose: 4000,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
   };
 
-  // Send OTP
-  const handleSendOtp = async (e) => {
+  const handleReset = async (e) => {
     e.preventDefault();
-    setPhoneErrorMessage("");
-    setErrorMessage("");
+    const auth = getAuth();
+    setIsLoading(true);
 
-    const cleanedPhone = phone.replace(/\s+/g, ""); // Remove spaces
-
-    if (!cleanedPhone.trim()) {
-      setErrorMessage("Please enter your phone number");
-      return;
-    }
-
-    if (!phoneRegex.test(cleanedPhone)) {
-      setPhoneErrorMessage(
-        "❌ Invalid phone number! Include country code (e.g., +1234567890)"
-      );
-      return;
+    if (!emailRegex.test(email)) {
+      showToast("Please enter a valid email address.");
+      return setIsLoading(false);
     }
 
     try {
-      setupRecaptcha();
-      const appVerifier = window.recaptchaVerifier;
-
-      signInWithPhoneNumber(auth, cleanedPhone, appVerifier)
-        .then((confirmation) => {
-          setConfirmationResult(confirmation);
-          alert("OTP sent successfully!");
-          setIsOtpSent(true);
-        })
-        .catch((error) => {
-          console.error("Error sending OTP:", error);
-          setErrorMessage("Failed to send OTP. Please try again.");
-        });
+      await sendPasswordResetEmail(auth, email);
+      showToast("Password reset link sent to your email.", "success");
     } catch (error) {
-      console.error("Error setting up recaptcha:", error);
-      setErrorMessage("Failed to send OTP. Please try again.");
-    }
-  };
-
-  // Verify OTP
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setOtpErrorMessage("");
-    setErrorMessage("");
-
-    if (!otp.trim()) {
-      setErrorMessage("Please enter the OTP");
-      return;
-    }
-
-    if (otp.length !== 6) {
-      setOtpErrorMessage("❌ OTP must be 6 digits");
-      return;
-    }
-
-    try {
-      if (confirmationResult) {
-        confirmationResult
-          .confirm(otp)
-          .then((result) => {
-            alert("OTP Verified! User signed in.");
-            console.log("User Info:", result.user);
-            navigate("/"); // Navigate to the home page or dashboard
-          })
-          .catch((error) => alert("Invalid OTP!"));
+      if (error.code === "auth/user-not-found") {
+        showToast("No user found with this email.");
+      } else if (error.code === "auth/invalid-email") {
+        showToast("Invalid email address.");
+      } else {
+        showToast("Something went wrong. Please try again.");
       }
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-      setErrorMessage("Invalid OTP. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4"
-      style={{
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1497294815431-9365093b7331?q=80&w=2070')",
-      }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <>
+      <ToastContainer />
+      <div className="min-h-screen flex items-center justify-center bg-[url('/bg.jpg')] bg-cover bg-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <Motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden"
+        >
+          <Motion.div
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className="bg-gradient-to-r from-green-600 to-green-700 p-4 sm:p-6 text-center"
+          >
+            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+              Reset Password
+            </h2>
+            <p className="text-green-100 text-sm sm:text-base mt-1">
+              We'll help you recover access
+            </p>
+          </Motion.div>
 
-      {/* OTP Container */}
-      <div className="relative w-full max-w-md bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-white/20">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Phone Verification
-          </h1>
-          <p className="text-gray-200">
-            {!isOtpSent
-              ? "Enter your phone number to receive a verification code"
-              : "Enter the verification code sent to your phone"}
-          </p>
-        </div>
-
-        {errorMessage && (
-          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-200 text-sm">
-            {errorMessage}
-          </div>
-        )}
-
-        {!isOtpSent ? (
-          <form onSubmit={handleSendOtp} className="space-y-6">
-            <div>
-              <label className="block text-gray-200 text-sm font-medium mb-2">
-                Phone Number
-              </label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="tel"
-                  className={`w-full pl-10 pr-4 py-2 bg-white/5 border ${
-                    phoneErrorMessage ? "border-red-500/50" : "border-white/10"
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white placeholder-gray-400`}
-                  placeholder="+1234567890"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-              {phoneErrorMessage && (
-                <p className="mt-1 text-sm text-red-200">{phoneErrorMessage}</p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
+          <form
+            onSubmit={handleReset}
+            className="p-6 sm:p-8 space-y-4 sm:space-y-6"
+          >
+            <Motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
             >
-              Send Code
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyOtp} className="space-y-6">
-            <div>
-              <label className="block text-gray-200 text-sm font-medium mb-2">
-                Verification Code
+              <label
+                htmlFor="email"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+              >
+                Email Address
               </label>
-              <div className="relative">
-                <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="text"
-                  maxLength={6}
-                  className={`w-full pl-10 pr-4 py-2 bg-white/5 border ${
-                    otpErrorMessage ? "border-red-500/50" : "border-white/10"
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white placeholder-gray-400`}
-                  placeholder="Enter 6-digit code"
-                  value={otp}
-                  onChange={(e) =>
-                    setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
-                  }
-                />
-              </div>
-              {otpErrorMessage && (
-                <p className="mt-1 text-sm text-red-200">{otpErrorMessage}</p>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-sm sm:text-base"
+                placeholder="your@email.com"
+                required
+              />
+            </Motion.div>
+
+            <Motion.button
+              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.01 }}
+              type="submit"
+              disabled={isLoading}
+              className={`w-full py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium sm:font-semibold text-white transition duration-200 ${
+                isLoading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-green-500 cursor-pointer"
+              }`}
+            >
+              {isLoading ? (
+                <span className="flex items-center justify-center text-sm sm:text-base">
+                  <svg
+                    className="animate-spin h-4 w-4 sm:h-5 sm:w-5 mr-2 text-white"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.37 0 0 5.37 0 12h4z"
+                    />
+                  </svg>
+                  Sending...
+                </span>
+              ) : (
+                "Send Reset Link"
               )}
-            </div>
-
-            <div className="space-y-4">
-              <button
-                type="submit"
-                className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
-              >
-                Verify Code
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsOtpSent(false)}
-                className="flex items-center justify-center w-full px-4 py-2 bg-transparent border border-white/20 hover:bg-white/5 text-white font-medium rounded-lg transition-colors duration-200"
-              >
-                Change Phone Number
-              </button>
-            </div>
+            </Motion.button>
           </form>
-        )}
 
-        <div id="recaptcha-container"></div>
+          <Motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-xs text-center text-gray-400 mb-4 sm:mb-6 px-4 sm:px-6"
+          >
+            Enter your registered email to receive a password reset link.
+          </Motion.p>
+        </Motion.div>
       </div>
-    </div>
+    </>
   );
-}
+};
 
-export default App;
+export default OTP;

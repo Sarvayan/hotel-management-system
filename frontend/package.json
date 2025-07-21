@@ -16,7 +16,7 @@
     "@tailwindcss/postcss": "^4.0.9",
     "axios": "^1.8.1",
     "bad-words": "^4.0.0",
-    "firebase": "^11.5.0",
+    "firebase": "^11.10.0",
     "framer-motion": "^12.6.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",

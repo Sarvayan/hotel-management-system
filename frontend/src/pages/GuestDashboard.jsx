@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
-import service1 from "../assets/images/service1.jpg";
+import service1 from "../assets/images/service1.png";
 import service2 from "../assets/images/service2.jpg";
 import { Link } from "react-router-dom";
 import ServiceSection from "../components/ServiceSection";

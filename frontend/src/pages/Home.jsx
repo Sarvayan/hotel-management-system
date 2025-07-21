@@ -1,10 +1,11 @@
-import React from "react";
+
 import Slider from "../components/Slider";
 import Header from "../layouts/Header";
 //import Header from "../layouts/header";
 import ServiceSection from "../components/ServiceSection";
-import Gallery from "../components/Gallery";
+
 import End from "../components/End";
+import Footer from "../layouts/Footer";
 
 const Home = () => {
   return (
@@ -12,8 +13,8 @@ const Home = () => {
       <Header />
       <Slider />
       <ServiceSection />
-      <Gallery />
       <End />
+     
     </div>
   );
 };

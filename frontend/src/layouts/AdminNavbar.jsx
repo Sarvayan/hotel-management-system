@@ -197,7 +197,7 @@ function AdminNavbar() {
                 clipRule="evenodd"
               />
             </svg>
-            Anuthama Villa
+            WeAre Villa
           </div>
         </Link>
         <div className="flex items-center space-x-4">

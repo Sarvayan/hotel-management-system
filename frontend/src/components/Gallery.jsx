@@ -32,8 +32,6 @@ const Gallery = () => {
 
   return (
     <div className="relative w-full max-w-5xl mx-auto py-10 bg-white">
-      
-
       <motion.div
         key={currentIndex}
         className="w-full h-96 overflow-hidden rounded-2xl flex justify-center items-center"

@@ -1,168 +1,227 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaBars } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FaBars, FaTimes, FaUser, FaCommentAlt, FaClipboardList, FaShoppingBasket, FaInfoCircle, FaEnvelope } from "react-icons/fa";
+import { MdRateReview, MdFeedback, MdHistory } from "react-icons/md";
 
 const Navbar = () => {
   const [activeMenu, setActiveMenu] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = (menu) => {
     setActiveMenu(activeMenu === menu ? null : menu);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setActiveMenu(null);
+    setMobileMenuOpen(false);
+  }, [location]);
+
+  const navItems = [
+    {
+      id: "account",
+      label: "Account",
+      icon: <FaUser className="mr-2" />,
+      color: "blue",
+      links: [
+        { to: "/home", label: "Home", icon: <FaUser className="mr-2" /> },
+        { to: "/guestdashboard", label: "Dashboard", icon: <FaClipboardList className="mr-2" /> },
+        { to: "/logout", label: "Logout", icon: <FaTimes className="mr-2" />, isDestructive: true }
+      ]
+    },
+    {
+      id: "reviews",
+      label: "Reviews",
+      icon: <MdRateReview className="mr-2" />,
+      color: "green",
+      links: [
+        { to: "/addreview", label: "Give Review", icon: <MdRateReview className="mr-2" /> },
+        { to: "/showreview", label: "View Reviews", icon: <FaCommentAlt className="mr-2" /> }
+      ]
+    },
+    {
+      id: "feedback",
+      label: "Feedback",
+      icon: <MdFeedback className="mr-2" />,
+      color: "yellow",
+      links: [
+        { to: "/addfeedback", label: "Give Feedback", icon: <MdFeedback className="mr-2" /> }
+      ]
+    },
+    {
+      id: "orders",
+      label: "Orders",
+      icon: <FaShoppingBasket className="mr-2" />,
+      color: "purple",
+      links: [
+        { to: "/menu", label: "Order Food", icon: <FaShoppingBasket className="mr-2" /> },
+        { to: "/orderhistory", label: "Food Order History", icon: <MdHistory className="mr-2" /> },
+        { to: "/bookinghistory", label: "Booking History", icon: <MdHistory className="mr-2" /> }
+      ]
+    },
+    {
+      id: "about",
+      label: "About Us",
+      to: "/about",
+      icon: <FaInfoCircle className="mr-2" />,
+      isStatic: true
+    },
+    {
+      id: "contact",
+      label: "Contact Us",
+      to: "/contactus",
+      icon: <FaEnvelope className="mr-2" />,
+      isStatic: true
+    }
+  ];
+
+  const colorClasses = {
+    blue: {
+      bg: "bg-blue-100",
+      hover: "hover:bg-blue-200",
+      active: "bg-blue-300",
+      text: "text-blue-800"
+    },
+    green: {
+      bg: "bg-green-100",
+      hover: "hover:bg-green-200",
+      active: "bg-green-300",
+      text: "text-green-800"
+    },
+    yellow: {
+      bg: "bg-yellow-100",
+      hover: "hover:bg-yellow-200",
+      active: "bg-yellow-300",
+      text: "text-yellow-800"
+    },
+    purple: {
+      bg: "bg-purple-100",
+      hover: "hover:bg-purple-200",
+      active: "bg-purple-300",
+      text: "text-purple-800"
+    }
+  };
+
   return (
-    <div className="navbar fixed top-0 left-0 w-full shadow-md bg-[#d9232e] z-50 p-4 flex justify-between items-center border-b-2 border-gray-300">
-      {/* Logo */}
-      <div className="text-2xl font-bold text-white">Anuthama Villa</div>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#b51e27] shadow-xl" : "bg-[#d9232e]"}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 md:h-20">
+          {/* Logo */}
+          <Link to="/" className="flex-shrink-0 flex items-center">
+            <span className="text-2xl font-bold text-white tracking-tight">WeAre Villa</span>
+          </Link>
 
-      {/* Main Nav Buttons */}
-      <div className="hidden lg:flex gap-4 items-center">
-        {/* Account Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => toggleMenu("account")}
-            className={`px-4 py-2 rounded-xl font-medium hover:bg-blue-200 transition cursor-pointer ${
-              activeMenu === "account" ? "bg-blue-300" : "bg-white"
-            }`}
-          >
-            Account
-          </button>
-          {activeMenu === "account" && (
-            <div className="absolute top-12 right-0 bg-white shadow-md rounded-xl p-3 w-48 border border-gray-200 z-10">
-              <Link
-                to="/home"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-blue-100 rounded cursor-pointer"
-              >
-                Home
-              </Link>
-              <Link
-                to="/guestdashboard"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-blue-100 rounded cursor-pointer"
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/logout"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 text-red-500 hover:bg-red-100 rounded cursor-pointer"
-              >
-                Logout
-              </Link>
-            </div>
-          )}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-2">
+            {navItems.map((item) => (
+              item.isStatic ? (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  className={`flex items-center px-4 py-2 rounded-lg text-white font-medium hover:bg-white/20 transition-colors duration-200 ${location.pathname === item.to ? "bg-white/10" : ""}`}
+                >
+                  {item.icon}
+                  {item.label}
+                </Link>
+              ) : (
+                <div key={item.id} className="relative">
+                  <button
+                    onClick={() => toggleMenu(item.id)}
+                    className={`flex items-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${colorClasses[item.color].hover} ${activeMenu === item.id ? colorClasses[item.color].active : "bg-white"} ${colorClasses[item.color].text}`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </button>
+                  {activeMenu === item.id && (
+                    <div className={`absolute right-0 mt-2 w-56 origin-top-right rounded-lg shadow-lg ${colorClasses[item.color].bg} ring-1 ring-black ring-opacity-5 z-10`}>
+                      <div className="py-1">
+                        {item.links.map((link) => (
+                          <Link
+                            key={link.to}
+                            to={link.to}
+                            className={`flex items-center px-4 py-2 text-sm ${link.isDestructive ? "text-red-600 hover:bg-red-50" : `hover:${colorClasses[item.color].hover} ${colorClasses[item.color].text}`}`}
+                          >
+                            {link.icon}
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
+            ))}
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="lg:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-white/20 focus:outline-none"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {mobileMenuOpen ? (
+                <FaTimes className="block h-6 w-6" />
+              ) : (
+                <FaBars className="block h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
-
-        {/* Reviews Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => toggleMenu("reviews")}
-            className={`px-4 py-2 rounded-xl font-medium hover:bg-green-200 transition cursor-pointer ${
-              activeMenu === "reviews" ? "bg-green-300" : "bg-white"
-            }`}
-          >
-            Reviews
-          </button>
-          {activeMenu === "reviews" && (
-            <div className="absolute top-12 right-0 bg-white shadow-md rounded-xl p-3 w-48 border border-gray-200 z-10">
-              <Link
-                to="/addreview"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-green-100 rounded cursor-pointer"
-              >
-                Give Review
-              </Link>
-              <Link
-                to="/showreview"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-green-100 rounded cursor-pointer"
-              >
-                View Reviews
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Feedback Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => toggleMenu("feedback")}
-            className={`px-4 py-2 rounded-xl font-medium hover:bg-yellow-200 transition cursor-pointer ${
-              activeMenu === "feedback" ? "bg-yellow-300" : "bg-white"
-            }`}
-          >
-            Feedback
-          </button>
-          {activeMenu === "feedback" && (
-            <div className="absolute top-12 right-0 bg-white shadow-md rounded-xl p-3 w-48 border border-gray-200 z-10">
-              <Link
-                to="/addfeedback"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-yellow-100 rounded cursor-pointer"
-              >
-                Give Feedback
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Orders Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => toggleMenu("orders")}
-            className={`px-4 py-2 rounded-xl font-medium hover:bg-purple-200 transition cursor-pointer ${
-              activeMenu === "orders" ? "bg-purple-300" : "bg-white"
-            }`}
-          >
-            Orders
-          </button>
-          {activeMenu === "orders" && (
-            <div className="absolute top-12 right-0 bg-white shadow-md rounded-xl p-3 w-48 border border-gray-200 z-10">
-              <Link
-                to="/menu"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-purple-100 rounded cursor-pointer"
-              >
-                Order Food
-              </Link>
-              <Link
-                to="/orderhistory"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-purple-100 rounded cursor-pointer"
-              >
-                Food Order History
-              </Link>
-              <Link
-                to="/bookinghistory"
-                onClick={() => setActiveMenu(null)}
-                className="block py-2 px-3 hover:bg-purple-100 rounded cursor-pointer"
-              >
-                Booking History
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Static Links */}
-        <Link
-          to="/about"
-          className="text-white font-medium hover:text-[#FFD700] px-4 py-2 rounded-xl transition cursor-pointer"
-        >
-          About Us
-        </Link>
-        <Link
-          to="/contactus"
-          className="text-white font-medium hover:text-[#FFD700] px-4 py-2 rounded-xl transition cursor-pointer"
-        >
-          Contact Us
-        </Link>
       </div>
 
-      {/* Mobile Menu Icon (optional future use) */}
-      <div className="lg:hidden">
-        <FaBars size={24} />
+      {/* Mobile menu */}
+      <div className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${mobileMenuOpen ? "max-h-screen" : "max-h-0"}`}>
+        <div className="px-2 pt-2 pb-4 space-y-1 sm:px-3 bg-[#d9232e]">
+          {navItems.map((item) => (
+            item.isStatic ? (
+              <Link
+                key={item.id}
+                to={item.to}
+                className={`flex items-center px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/20 w-full ${location.pathname === item.to ? "bg-white/10" : ""}`}
+              >
+                {item.icon}
+                <span className="ml-3">{item.label}</span>
+              </Link>
+            ) : (
+              <div key={item.id} className="relative">
+                <button
+                  onClick={() => toggleMenu(item.id)}
+                  className={`flex items-center px-3 py-2 rounded-md text-base font-medium w-full ${activeMenu === item.id ? colorClasses[item.color].active : "bg-white"} ${colorClasses[item.color].text}`}
+                >
+                  {item.icon}
+                  <span className="ml-3">{item.label}</span>
+                </button>
+                {activeMenu === item.id && (
+                  <div className={`pl-6 mt-1 space-y-1 ${colorClasses[item.color].bg} rounded-md`}>
+                    {item.links.map((link) => (
+                      <Link
+                        key={link.to}
+                        to={link.to}
+                        className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${link.isDestructive ? "text-red-600 hover:bg-red-50" : `hover:${colorClasses[item.color].hover} ${colorClasses[item.color].text}`}`}
+                      >
+                        {link.icon}
+                        <span className="ml-3">{link.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          ))}
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
