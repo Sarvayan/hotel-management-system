@@ -27,7 +27,7 @@ function AddEvent() {
 
   const getNextEventId = (eventList) => {
     const nums = eventList
-      .map((e) => parseInt(e.eventId?.replace("E", ""), 10))
+      .map((e) => parseInt(e.eventNo?.replace("E", ""), 10))
       .filter((n) => !isNaN(n));
     const max = nums.length > 0 ? Math.max(...nums) : 0;
     const nextNum = (max + 1).toString().padStart(3, "0");
@@ -44,12 +44,16 @@ function AddEvent() {
           ? response.data.retdata
           : [];
         setEvents(allEvents);
+        console.log(allEvents)
+
         const nextId = getNextEventId(allEvents);
+        console.log(nextId)
+       
         setEventId(nextId);
       } catch (error) {
         console.error("Error fetching events:", error);
         setEvents([]);
-        setEventId("E001"); // fallback
+        setEventId("E001");
       }
     };
     fetchEvents();

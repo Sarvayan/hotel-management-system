@@ -15,7 +15,7 @@ function RoomBooking() {
     children: 0,
     nationality: "",
     noofrooms: 1,
-    kitchen: "No"
+    kitchen: "No",
   });
   const [rooms, setRooms] = useState([]);
   const [availableRooms, setAvailableRooms] = useState([]);
@@ -60,13 +60,13 @@ function RoomBooking() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value);
   };
 
   const validateField = (name, value) => {
     let error = "";
-    
+
     if (name === "checkin") {
       const selectedDate = new Date(value);
       const today = new Date();
@@ -86,13 +86,19 @@ function RoomBooking() {
       }
     }
 
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: error }));
     return !error;
   };
 
   useEffect(() => {
     calculateTotalAmount();
-  }, [formData.checkin, formData.checkout, formData.roomType, formData.noofrooms, rooms]);
+  }, [
+    formData.checkin,
+    formData.checkout,
+    formData.roomType,
+    formData.noofrooms,
+    rooms,
+  ]);
 
   const calculateTotalAmount = () => {
     if (formData.checkin && formData.checkout && formData.roomType) {
@@ -100,7 +106,7 @@ function RoomBooking() {
       const checkoutDate = new Date(formData.checkout);
       const timeDiff = checkoutDate - checkinDate;
       const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      const roomDetails = rooms.find(r => r.roomType === formData.roomType);
+      const roomDetails = rooms.find((r) => r.roomType === formData.roomType);
       if (roomDetails) {
         const total = days * roomDetails.pricePerNight * formData.noofrooms;
         setTotalAmount(total);
@@ -111,8 +117,10 @@ function RoomBooking() {
   useEffect(() => {
     if (formData.roomType) {
       const filteredRooms = rooms
-        .filter(room => room.roomType === formData.roomType)
-        .sort((a, b) => a.roomNo.localeCompare(b.roomNo, undefined, { numeric: true }));
+        .filter((room) => room.roomType === formData.roomType)
+        .sort((a, b) =>
+          a.roomNo.localeCompare(b.roomNo, undefined, { numeric: true })
+        );
       setAvailableRooms(filteredRooms);
     } else {
       setAvailableRooms([]);
@@ -122,12 +130,12 @@ function RoomBooking() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // Validate all fields
-    const isValid = Object.keys(formData).every(key => {
+    const isValid = Object.keys(formData).every((key) => {
       if (key === "children" || key === "kitchen") return true;
       if (!formData[key]) {
-        setErrors(prev => ({ ...prev, [key]: "This field is required" }));
+        setErrors((prev) => ({ ...prev, [key]: "This field is required" }));
         return false;
       }
       return true;
@@ -139,12 +147,12 @@ function RoomBooking() {
     }
 
     if (formData.noofrooms >= 3) {
-      setFormData(prev => ({ ...prev, kitchen: "Yes" }));
+      setFormData((prev) => ({ ...prev, kitchen: "Yes" }));
     }
 
     const assignedRoomNos = availableRooms
       .slice(0, formData.noofrooms)
-      .map(room => room.roomNo);
+      .map((room) => room.roomNo);
 
     try {
       const availabilityResponse = await axios.post(
@@ -192,14 +200,14 @@ function RoomBooking() {
       {/* Background with subtle overlay */}
       <div className="absolute inset-0 bg-black opacity-5 z-0"></div>
       <div
-              className="absolute inset-0 w-full h-full opacity-10"
-              style={{
-                backgroundImage: `url(${adminBg})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            ></div>
+        className="absolute inset-0 w-full h-full opacity-10"
+        style={{
+          backgroundImage: `url(${adminBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      ></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Main card container */}
@@ -221,9 +229,9 @@ function RoomBooking() {
               <div className="h-full flex flex-col justify-between">
                 <div>
                   <div className="rounded-lg overflow-hidden mb-6 shadow-md">
-                    <img 
-                      src={image6} 
-                      alt="Luxury Room" 
+                    <img
+                      src={image6}
+                      alt="Luxury Room"
                       className="w-full h-48 object-cover"
                     />
                   </div>
@@ -233,32 +241,76 @@ function RoomBooking() {
                   <ul className="space-y-4">
                     <li className="flex items-start">
                       <div className="bg-red-100 p-2 rounded-full mr-3">
-                        <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-5 h-5 text-red-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       </div>
-                      <span className="text-gray-700">Best price guarantee</span>
+                      <span className="text-gray-700">
+                        Best price guarantee
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <div className="bg-red-100 p-2 rounded-full mr-3">
-                        <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-5 h-5 text-red-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       </div>
                       <span className="text-gray-700">No booking fees</span>
                     </li>
                     <li className="flex items-start">
                       <div className="bg-red-100 p-2 rounded-full mr-3">
-                        <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-5 h-5 text-red-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       </div>
-                      <span className="text-gray-700">24/7 customer service</span>
+                      <span className="text-gray-700">
+                        24/7 customer service
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <div className="bg-red-100 p-2 rounded-full mr-3">
-                        <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-5 h-5 text-red-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       </div>
                       <span className="text-gray-700">Free cancellation</span>
@@ -268,7 +320,8 @@ function RoomBooking() {
                 <div className="mt-8 p-4 bg-red-50 rounded-lg border border-red-100">
                   <h4 className="font-medium text-red-700 mb-2">Need help?</h4>
                   <p className="text-sm text-gray-600">
-                    Contact our reservation team at <span className="text-red-600">+94 76 123 4567</span>
+                    Contact our reservation team at{" "}
+                    <span className="text-red-600">+94 76 123 4567</span>
                   </p>
                 </div>
               </div>
@@ -292,12 +345,16 @@ function RoomBooking() {
                             value={formData.checkin}
                             onChange={handleChange}
                             className={`w-full px-4 py-3 border rounded-lg focus:border-transparent transition ${
-                              errors.checkin ? "border-red-500" : "border-gray-300"
+                              errors.checkin
+                                ? "border-red-500"
+                                : "border-gray-300"
                             }`}
                             required
                           />
                           {errors.checkin && (
-                            <p className="mt-1 text-sm text-red-600">{errors.checkin}</p>
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.checkin}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -312,13 +369,17 @@ function RoomBooking() {
                             value={formData.checkout}
                             onChange={handleChange}
                             className={`w-full px-4 py-3 border rounded-lg focus:border-transparent transition ${
-                              errors.checkout ? "border-red-500" : "border-gray-300"
+                              errors.checkout
+                                ? "border-red-500"
+                                : "border-gray-300"
                             }`}
                             required
                             disabled={!formData.checkin}
                           />
                           {errors.checkout && (
-                            <p className="mt-1 text-sm text-red-600">{errors.checkout}</p>
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.checkout}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -337,7 +398,7 @@ function RoomBooking() {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg f focus:border-transparent transition"
                           required
                         >
-                          {[1, 2, 3, 4].map(num => (
+                          {[1, 2, 3, 4].map((num) => (
                             <option key={num} value={num}>
                               {num} {num === 1 ? "Adult" : "Adults"}
                             </option>
@@ -354,7 +415,7 @@ function RoomBooking() {
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg  focus:border-transparent transition"
                         >
-                          {[0, 1, 2, 3].map(num => (
+                          {[0, 1, 2, 3].map((num) => (
                             <option key={num} value={num}>
                               {num} {num === 1 ? "Child" : "Children"}
                             </option>
@@ -370,7 +431,9 @@ function RoomBooking() {
                           value={formData.nationality}
                           onChange={handleChange}
                           className={`w-full px-4 py-3 border rounded-lg focus:border-transparent transition ${
-                            errors.nationality ? "border-red-500" : "border-gray-300"
+                            errors.nationality
+                              ? "border-red-500"
+                              : "border-gray-300"
                           }`}
                           required
                         >
@@ -379,7 +442,9 @@ function RoomBooking() {
                           <option value="Non-Resident">Non-Resident</option>
                         </select>
                         {errors.nationality && (
-                          <p className="mt-1 text-sm text-red-600">{errors.nationality}</p>
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.nationality}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -395,7 +460,9 @@ function RoomBooking() {
                           value={formData.roomType}
                           onChange={handleChange}
                           className={`w-full px-4 py-3 border rounded-lg focus:border-transparent transition ${
-                            errors.roomType ? "border-red-500" : "border-gray-300"
+                            errors.roomType
+                              ? "border-red-500"
+                              : "border-gray-300"
                           }`}
                           required
                         >
@@ -406,7 +473,9 @@ function RoomBooking() {
                           <option value="Executive">Executive Suite</option>
                         </select>
                         {errors.roomType && (
-                          <p className="mt-1 text-sm text-red-600">{errors.roomType}</p>
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.roomType}
+                          </p>
                         )}
                       </div>
                       {formData.roomType && (
@@ -419,26 +488,34 @@ function RoomBooking() {
                             value={formData.noofrooms}
                             onChange={handleChange}
                             className={`w-full px-4 py-3 border rounded-lg  focus:border-transparent transition ${
-                              errors.noofrooms ? "border-red-500" : "border-gray-300"
+                              errors.noofrooms
+                                ? "border-red-500"
+                                : "border-gray-300"
                             }`}
                             required
                           >
                             {availableRooms.length > 0 ? (
-                              Array.from({ length: Math.min(availableRooms.length, 5) }, (_, i) => (
-                                <option key={i + 1} value={i + 1}>
-                                  {i + 1} {i === 0 ? "Room" : "Rooms"}
-                                </option>
-                              ))
+                              Array.from(
+                                { length: Math.min(availableRooms.length, 5) },
+                                (_, i) => (
+                                  <option key={i + 1} value={i + 1}>
+                                    {i + 1} {i === 0 ? "Room" : "Rooms"}
+                                  </option>
+                                )
+                              )
                             ) : (
                               <option value="">No rooms available</option>
                             )}
                           </select>
                           {errors.noofrooms && (
-                            <p className="mt-1 text-sm text-red-600">{errors.noofrooms}</p>
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.noofrooms}
+                            </p>
                           )}
                           {formData.roomType && availableRooms.length > 0 && (
                             <p className="mt-2 text-xs text-gray-500">
-                              Available rooms: {availableRooms.map(r => r.roomNo).join(", ")}
+                              Available rooms:{" "}
+                              {availableRooms.map((r) => r.roomNo).join(", ")}
                             </p>
                           )}
                         </div>
@@ -450,13 +527,22 @@ function RoomBooking() {
                       <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg">
                         <div className="flex">
                           <div className="flex-shrink-0">
-                            <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            <svg
+                              className="h-5 w-5 text-yellow-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clipRule="evenodd"
+                              />
                             </svg>
                           </div>
                           <div className="ml-3">
                             <p className="text-sm text-yellow-700">
-                              A shared kitchen will be automatically provided for bookings of 3 or more rooms.
+                              A shared kitchen will be automatically provided
+                              for bookings of 3 or more rooms.
                             </p>
                           </div>
                         </div>
@@ -468,10 +554,17 @@ function RoomBooking() {
                       <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
                         <div className="flex justify-between items-center">
                           <div>
-                            <h4 className="text-lg font-semibold text-gray-800">Estimated Total</h4>
+                            <h4 className="text-lg font-semibold text-gray-800">
+                              Estimated Total
+                            </h4>
                             {formData.checkin && formData.checkout && (
                               <p className="text-sm text-gray-500 mt-1">
-                                {Math.ceil((new Date(formData.checkout) - new Date(formData.checkin)) / (1000 * 3600 * 24))} night stay
+                                {Math.ceil(
+                                  (new Date(formData.checkout) -
+                                    new Date(formData.checkin)) /
+                                    (1000 * 3600 * 24)
+                                )}{" "}
+                                night stay
                               </p>
                             )}
                           </div>
@@ -479,7 +572,9 @@ function RoomBooking() {
                             <p className="text-2xl font-bold text-red-600">
                               Rs {totalAmount.toLocaleString()}
                             </p>
-                            <p className="text-xs text-gray-500 mt-1">Including all taxes</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Including all taxes
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -562,8 +657,8 @@ function RoomBooking() {
                     Room Not Available
                   </h3>
                   <p className="mt-3 text-gray-500">
-                    The selected room(s) are not available for your chosen dates.
-                    Please try different dates or room types.
+                    The selected room(s) are not available for your chosen
+                    dates. Please try different dates or room types.
                   </p>
                   <div className="mt-8">
                     <button

@@ -71,7 +71,7 @@ function Login() {
       })
 
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         const errorMap = {
           "auth/user-not-found": "No user found with this email.",
           "auth/wrong-password": "Incorrect password. Please try again.",

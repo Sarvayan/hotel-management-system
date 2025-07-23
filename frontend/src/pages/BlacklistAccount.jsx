@@ -128,12 +128,12 @@ function BlacklistAccount() {
 
         setGuests((prev) => prev.filter((g) => g._id !== guestToDelete));
         setIsModalOpen(false);
-      } 
+      }
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
       toast.error("Error: " + (error.response?.data?.message || error.message));
     }
-  }; 
+  };
 
   const cancelDelete = () => {
     setIsModalOpen(false);

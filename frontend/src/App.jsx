@@ -78,7 +78,10 @@ function App() {
             <Route path="/" element={<LandingPage />} />
 
             <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login setUserRole={setUserRole} />} />
+            <Route
+              path="/login"
+              element={<Login setUserRole={setUserRole} />}
+            />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/otp" element={<OTP />} />
             <Route path="/newpassword" element={<NewPassword />} />

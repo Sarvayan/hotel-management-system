@@ -71,7 +71,7 @@ function GuestList() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center p-2 my-1 relative"
+      className="min-h-screen flex flex-col items-center justify-center p-4 md:p-6 relative"
       style={{
         backgroundImage: `url(${guestDetails})`,
         backgroundSize: "cover",
@@ -80,22 +80,22 @@ function GuestList() {
         minHeight: "100vh",
       }}
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8 text-center ">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+        <div className="mb-6 md:mb-8 text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             Guest Management
           </h1>
-          <p className="text-lg text-gray-800 font-bold">
+          <p className="text-sm sm:text-base md:text-lg text-gray-800 font-bold">
             View all registered guests
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-grow">
+        <div className="bg-white rounded-lg md:rounded-xl shadow-md p-4 md:p-6 mb-6 md:mb-8">
+          <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center">
+            <div className="relative w-full md:flex-grow">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
-                  className="w-5 h-5 text-gray-400"
+                  className="w-4 h-4 md:w-5 md:h-5 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -114,16 +114,16 @@ function GuestList() {
                 placeholder="Search by Guest Name"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 pr-4 py-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                className="pl-9 md:pl-10 pr-4 py-2 md:py-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm md:text-base"
               />
             </div>
 
             <button
               onClick={handleVoiceSearch}
-              className="flex items-center justify-center px-6 py-3 bg-[#d9232e] text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 cursor-pointer"
+              className="w-full md:w-auto flex items-center justify-center px-4 md:px-6 py-2 md:py-3 bg-[#d9232e] text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 cursor-pointer text-sm md:text-base"
             >
               <svg
-                className="w-5 h-5 mr-2"
+                className="w-4 h-4 md:w-5 md:h-5 mr-2"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -136,61 +136,62 @@ function GuestList() {
                   d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
                 />
               </svg>
-              Voice Search
+              <span className="hidden sm:inline">Voice Search</span>
+              <span className="sm:hidden">Voice</span>
             </button>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-white rounded-lg md:rounded-xl shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 py-2 md:px-4 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     No
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 py-2 md:px-4 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Full Name
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="hidden sm:table-cell px-2 py-2 md:px-4 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Address
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="hidden md:table-cell px-2 py-2 md:px-4 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     NIC
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 py-2 md:px-4 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Email
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="hidden sm:table-cell px-2 py-2 md:px-4 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Phone
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="hidden md:table-cell px-2 py-2 md:px-4 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Gender
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 py-2 md:px-4 md:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Actions
                   </th>
@@ -201,7 +202,7 @@ function GuestList() {
                   <tr>
                     <td
                       colSpan="8"
-                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center"
+                      className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-center"
                     >
                       No guests found
                     </td>
@@ -212,41 +213,41 @@ function GuestList() {
                       key={guest._id}
                       className="hover:bg-gray-50 transition-colors duration-150"
                     >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {startIndex + index}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-sm text-gray-500">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                            <span className="text-blue-600 font-medium">
+                          <div className="flex-shrink-0 h-8 w-8 md:h-10 md:w-10 bg-blue-100 rounded-full flex items-center justify-center mr-2 md:mr-3">
+                            <span className="text-blue-600 font-medium text-xs md:text-sm">
                               {(guest.fname || "").charAt(0)}
                               {(guest.lname || "").charAt(0)}
                             </span>
                           </div>
                           <div>
-                            <div className="font-medium text-gray-900">
+                            <div className="font-medium text-gray-900 text-sm md:text-base">
                               {guest.fname || "N/A"} {guest.lname || "N/A"}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="hidden sm:table-cell px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-sm text-gray-500">
                         <div className="max-w-xs truncate">
                           {guest.address || "N/A"}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="hidden md:table-cell px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-sm text-gray-500">
                         {guest.nic || "N/A"}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-sm text-gray-500">
                         <a
                           href={`mailto:${guest.email || ""}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 hover:underline text-xs md:text-sm"
                         >
                           {guest.email || "N/A"}
                         </a>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="hidden sm:table-cell px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-sm text-gray-500">
                         <a
                           href={`tel:${guest.phoneNumber || ""}`}
                           className="text-blue-600 hover:underline"
@@ -254,7 +255,7 @@ function GuestList() {
                           {guest.phoneNumber || "N/A"}
                         </a>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="hidden md:table-cell px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-sm text-gray-500">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             guest.gender === "Male"
@@ -267,10 +268,10 @@ function GuestList() {
                           {guest.gender || "N/A"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <td className="px-2 py-3 md:px-4 md:py-4 whitespace-nowrap text-right text-sm font-medium">
                         <Link
                           to={`/viewdetails/${guest._id}`}
-                          className="text-green-600 hover:text-green-900 mr-4 hover:underline"
+                          className="text-green-600 hover:text-green-900 mr-2 md:mr-4 hover:underline text-xs md:text-sm"
                         >
                           View
                         </Link>
@@ -283,26 +284,26 @@ function GuestList() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-6 bg-white rounded-xl shadow-md p-4">
+        <div className="flex items-center justify-between mt-4 md:mt-6 bg-white rounded-lg md:rounded-xl shadow-md p-3 md:p-4">
           <div className="flex-1 flex justify-between sm:hidden">
             <button
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
-              className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+              className={`relative inline-flex items-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md ${
                 page === 1
                   ? "bg-gray-100 text-gray-400"
                   : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
-              Previous
+              Prev
             </button>
-            <span className="text-sm text-gray-700">
-              Page {page} of {totalPages}
+            <span className="text-sm text-gray-700 mx-4 flex items-center">
+              {page} / {totalPages}
             </span>
             <button
               disabled={page >= totalPages}
               onClick={() => setPage(page + 1)}
-              className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+              className={`relative inline-flex items-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md ${
                 page >= totalPages
                   ? "bg-gray-100 text-gray-400"
                   : "bg-white text-gray-700 hover:bg-gray-50"
@@ -313,7 +314,7 @@ function GuestList() {
           </div>
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm text-gray-700">
+              <p className="text-xs md:text-sm text-gray-700">
                 Showing <span className="font-medium">{startIndex}</span> to{" "}
                 <span className="font-medium">{endIndex}</span> of{" "}
                 <span className="font-medium">{totalGuests}</span> customers
@@ -335,7 +336,7 @@ function GuestList() {
                 >
                   <span className="sr-only">Previous</span>
                   <svg
-                    className="h-5 w-5"
+                    className="h-4 w-4 md:h-5 md:w-5"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -353,7 +354,7 @@ function GuestList() {
                     <button
                       key={pageNum}
                       onClick={() => setPage(pageNum)}
-                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                      className={`relative inline-flex items-center px-3 py-1 md:px-4 md:py-2 border text-xs md:text-sm font-medium ${
                         page === pageNum
                           ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
                           : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
@@ -374,7 +375,7 @@ function GuestList() {
                 >
                   <span className="sr-only">Next</span>
                   <svg
-                    className="h-5 w-5"
+                    className="h-4 w-4 md:h-5 md:w-5"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
