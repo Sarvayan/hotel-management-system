@@ -18,20 +18,19 @@ function ManageEvent() {
     axios
       .get(`http://localhost:4000/api/events/eventids`)
       .then((response) => {
-        setEventIds(response.data.eventTypes || []); 
+        setEventIds(response.data.eventTypes || []);
       })
       .catch((error) => {
         console.error("Error fetching events data:", error);
       });
   }
 
-
   function changeEventId(event) {
     setEventId(event.target.value);
   }
 
   function handleSubmit() {
-    console.log(eventId)
+    console.log(eventId);
     axios
       .get(`http://localhost:4000/api/events/eventdetails/${eventId}`)
       .then((response) => {
@@ -47,7 +46,7 @@ function ManageEvent() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center p-2 my-1 relative"
+      className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 my-1 relative"
       style={{
         backgroundImage: `url(${guestDetails})`,
         backgroundSize: "cover",
@@ -56,21 +55,21 @@ function ManageEvent() {
         minHeight: "100vh",
       }}
     >
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="bg-[#d9232e] p-6">
-          <h1 className="text-2xl font-bold text-center text-white">
+      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-[#d9232e] p-4 sm:p-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-center text-white">
             Manage Event
           </h1>
-          <p className="text-center text-white mt-1">
+          <p className="text-center text-white mt-1 text-sm sm:text-base">
             Select an event to update its details
           </p>
         </div>
-  
-        <div className="p-6 space-y-6">
+
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div className="space-y-2">
             <label
               htmlFor="eventId"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm sm:text-base font-medium text-gray-700"
             >
               Select Event
             </label>
@@ -79,7 +78,7 @@ function ManageEvent() {
                 id="eventId"
                 value={eventId}
                 onChange={changeEventId}
-                className="block w-full px-4 py-3 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                className="block w-full px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
               >
                 <option value="" disabled className="text-gray-400">
                   Choose an event...
@@ -90,9 +89,9 @@ function ManageEvent() {
                   </option>
                 ))}
               </select>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 pointer-events-none">
                 <svg
-                  className="h-5 w-5 text-gray-400"
+                  className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -106,19 +105,19 @@ function ManageEvent() {
               </div>
             </div>
           </div>
-  
+
           <button
             onClick={handleSubmit}
             disabled={!eventId}
-            className={`w-full py-3 px-4 rounded-lg shadow-md font-medium text-white transition-all duration-200 ${
+            className={`w-full py-2 px-4 sm:py-3 sm:px-4 rounded-lg shadow-md font-medium text-white transition-all duration-200 ${
               eventId
                 ? "bg-[#d9232e] hover:from-red-700 hover:to-red-800 transform hover:-translate-y-0.5 cursor-pointer"
                 : "bg-gray-300 cursor-not-allowed"
             }`}
           >
-            <span className="flex items-center justify-center">
+            <span className="flex items-center justify-center text-sm sm:text-base">
               <svg
-                className="w-5 h-5 mr-2"
+                className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -137,5 +136,6 @@ function ManageEvent() {
       </div>
     </div>
   );
-}  
+}
+
 export default ManageEvent;

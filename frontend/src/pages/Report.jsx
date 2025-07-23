@@ -467,7 +467,6 @@ function Report() {
             ]);
           });
 
-          
           const monthlyTotal = Object.values(getDailyRevenue()).reduce(
             (sum, day) => ({
               room: sum.room + day.room,
@@ -544,29 +543,30 @@ function Report() {
         minHeight: "100vh",
       }}
     >
-      <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Header Section - Responsive adjustments */}
         <div
-          className="py-6 px-6 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+          className="py-4 sm:py-6 px-4 sm:px-6 md:px-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4"
           style={{ backgroundColor: colors.header }}
         >
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-white">
+          <div className="w-full sm:w-auto">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
               Booking Report
             </h1>
-            <p className="text-indigo-100 mt-1">
+            <p className="text-indigo-100 text-sm sm:text-base mt-1">
               {months.find((m) => m.value === selectedMonth)?.label}{" "}
               {selectedYear}
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+          <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-2 sm:gap-3">
             <select
               value={selectedReportType}
               onChange={(e) => {
                 setSelectedReportType(e.target.value);
                 setSelectedEventType("");
               }}
-              className="bg-white text-gray-800 font-medium px-4 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full sm:w-48 text-sm sm:text-base bg-white text-gray-800 font-medium px-3 py-1 sm:px-4 sm:py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             >
               {reportTypes.map((type) => (
                 <option key={type} value={type}>
@@ -575,11 +575,11 @@ function Report() {
               ))}
             </select>
 
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                className="bg-white text-gray-800 font-medium px-4 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-24 sm:w-28 text-sm sm:text-base bg-white text-gray-800 font-medium px-2 py-1 sm:px-3 sm:py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               >
                 {months.map((month) => (
                   <option key={month.value} value={month.value}>
@@ -591,7 +591,7 @@ function Report() {
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
-                className="bg-white text-gray-800 font-medium px-4 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-20 sm:w-24 text-sm sm:text-base bg-white text-gray-800 font-medium px-2 py-1 sm:px-3 sm:py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               >
                 {years.map((year) => (
                   <option key={year} value={year}>
@@ -606,7 +606,7 @@ function Report() {
               <select
                 value={selectedEventType}
                 onChange={(e) => setSelectedEventType(e.target.value)}
-                className="bg-white text-gray-800 font-medium px-4 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full sm:w-40 text-sm sm:text-base bg-white text-gray-800 font-medium px-3 py-1 sm:px-4 sm:py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               >
                 {eventTypes.map((type) => (
                   <option key={type} value={type}>
@@ -618,11 +618,11 @@ function Report() {
 
             <button
               onClick={generateReport}
-              className={`${colors.primary} ${colors.primaryHover} text-white font-semibold px-4 py-2 rounded-lg shadow-md transition flex items-center justify-center gap-2`}
+              className={`${colors.primary} ${colors.primaryHover} text-sm sm:text-base text-white font-semibold px-3 py-1 sm:px-4 sm:py-2 rounded-lg shadow-md transition flex items-center justify-center gap-1 sm:gap-2`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-4 w-4 sm:h-5 sm:w-5"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -632,18 +632,20 @@ function Report() {
                   clipRule="evenodd"
                 />
               </svg>
-              Generate PDF
+              <span className="hidden xs:inline">Generate</span>
+              <span className="xs:hidden">PDF</span>
             </button>
           </div>
         </div>
 
-        <div className="p-6 md:p-8" ref={reportRef}>
+        {/* Main Content Section */}
+        <div className="p-3 sm:p-4 md:p-6 lg:p-8 overflow-auto" ref={reportRef}>
           {loading ? (
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
             </div>
           ) : error ? (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4">
+            <div className="bg-red-50 border-l-4 border-red-500 p-3 sm:p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg
@@ -666,11 +668,11 @@ function Report() {
             </div>
           ) : (
             <>
-              <div className="mb-6 pb-4 border-b border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-800">
+              <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-gray-200">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
                   {selectedReportType} Report
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-sm sm:text-base">
                   {months.find((m) => m.value === selectedMonth)?.label}{" "}
                   {selectedYear}
                   {selectedEventType &&
@@ -678,550 +680,562 @@ function Report() {
                     ` • ${selectedEventType}`}
                 </p>
               </div>
-              {selectedReportType === "Room Booking" && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className={`${getTableHeaderColor()}`}>
-                      <tr>
-                        {[
-                          "First Name",
-                          "Last Name",
-                          "NIC",
-                          "Check-in",
-                          "Check-out",
-                          "Adults",
-                          "Children",
-                          "Nationality",
-                          "Rooms",
-                          "Kitchen",
-                          "Room Total",
-                          "Order Total",
-                          "Full Total",
-                        ].map((header) => (
-                          <th
-                            key={header}
-                            className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
-                          >
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {filteredRoomBookings.length > 0 ? (
-                        filteredRoomBookings.map((item, index) => {
-                          const guest = getGuestDetails(item.email);
-                          const orderTotal = getOrderTotalByEmail(item.email);
-                          const roomTotal = item.totalAmount || 0;
-                          const fullTotal = orderTotal + roomTotal;
-                          return (
-                            <tr key={index} className="hover:bg-gray-50">
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                {guest?.fname || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {guest?.lname || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {guest?.nic || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {new Date(item.checkin).toLocaleDateString()}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {new Date(item.checkout).toLocaleDateString()}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
-                                {item.adult}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
-                                {item.children}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.nationality}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
-                                {item.noofrooms}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
-                                {item.kitchen ? "Yes" : "No"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-medium">
-                                {roomTotal.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-medium">
-                                {orderTotal.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-blue-600">
-                                {fullTotal.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
+
+              {/* Tables - Responsive adjustments */}
+              <div className="overflow-x-auto">
+                {selectedReportType === "Room Booking" && (
+                  <div className="min-w-full inline-block align-middle rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className={`${getTableHeaderColor()}`}>
                         <tr>
-                          <td
-                            colSpan="13"
-                            className="px-4 py-6 text-center text-sm text-gray-500"
-                          >
-                            No room bookings found for the selected period
-                          </td>
+                          {[
+                            "First Name",
+                            "Last Name",
+                            "NIC",
+                            "Check-in",
+                            "Check-out",
+                            "Adults",
+                            "Children",
+                            "Nationality",
+                            "Rooms",
+                            "Kitchen",
+                            "Room Total",
+                            "Order Total",
+                            "Full Total",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="px-2 py-2 sm:px-3 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                            >
+                              {header}
+                            </th>
+                          ))}
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {selectedReportType === "Event Booking" && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className={`${getTableHeaderColor()}`}>
-                      <tr>
-                        {[
-                          "First Name",
-                          "Last Name",
-                          "NIC",
-                          "Event Name",
-                          "Booking Date",
-                          "Guests",
-                          "Event Total",
-                          "Order Total",
-                          "Full Total",
-                        ].map((header) => (
-                          <th
-                            key={header}
-                            className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
-                          >
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {filteredEventBookings.length > 0 ? (
-                        filteredEventBookings.map((item, index) => {
-                          const guest = getGuestDetails(item.email);
-                          const orderTotal = getOrderTotalByEmail(item.email);
-                          const eventTotal = item.totalAmount || 0;
-                          const fullTotal = orderTotal + eventTotal;
-                          return (
-                            <tr key={index} className="hover:bg-gray-50">
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                {guest?.fname || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {guest?.lname || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {guest?.nic || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.eventType}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {new Date(item.eventDate).toLocaleDateString()}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
-                                {item.guests}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-medium">
-                                {eventTotal.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-medium">
-                                {orderTotal.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-purple-600">
-                                {fullTotal.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {filteredRoomBookings.length > 0 ? (
+                          filteredRoomBookings.map((item, index) => {
+                            const guest = getGuestDetails(item.email);
+                            const orderTotal = getOrderTotalByEmail(item.email);
+                            const roomTotal = item.totalAmount || 0;
+                            const fullTotal = orderTotal + roomTotal;
+                            return (
+                              <tr key={index} className="hover:bg-gray-50">
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                  {guest?.fname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {guest?.lname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {guest?.nic || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {new Date(item.checkin).toLocaleDateString()}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {new Date(item.checkout).toLocaleDateString()}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-center">
+                                  {item.adult}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-center">
+                                  {item.children}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.nationality}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-center">
+                                  {item.noofrooms}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-center">
+                                  {item.kitchen ? "Yes" : "No"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 font-medium">
+                                  {roomTotal.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 font-medium">
+                                  {orderTotal.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-blue-600">
+                                  {fullTotal.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan="13"
+                              className="px-4 py-4 text-center text-xs sm:text-sm text-gray-500"
+                            >
+                              No room bookings found for the selected period
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {/* Other tables with similar responsive adjustments */}
+                {selectedReportType === "Event Booking" && (
+                  <div className="min-w-full inline-block align-middle rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className={`${getTableHeaderColor()}`}>
                         <tr>
-                          <td
-                            colSpan="9"
-                            className="px-4 py-6 text-center text-sm text-gray-500"
-                          >
-                            No event bookings found for the selected period and
-                            event type
-                          </td>
+                          {[
+                            "First Name",
+                            "Last Name",
+                            "NIC",
+                            "Event Name",
+                            "Booking Date",
+                            "Guests",
+                            "Event Total",
+                            "Order Total",
+                            "Full Total",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="px-2 py-2 sm:px-3 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                            >
+                              {header}
+                            </th>
+                          ))}
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {selectedReportType === "Blacklisted Customers" && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className={`${getTableHeaderColor()}`}>
-                      <tr>
-                        {[
-                          "First Name",
-                          "Last Name",
-                          "Email",
-                          "Reason",
-                          "Status",
-                        ].map((header) => (
-                          <th
-                            key={header}
-                            className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
-                          >
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {blacklist.length > 0 ? (
-                        blacklist.map((item, index) => {
-                          return (
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {filteredEventBookings.length > 0 ? (
+                          filteredEventBookings.map((item, index) => {
+                            const guest = getGuestDetails(item.email);
+                            const orderTotal = getOrderTotalByEmail(item.email);
+                            const eventTotal = item.totalAmount || 0;
+                            const fullTotal = orderTotal + eventTotal;
+                            return (
+                              <tr key={index} className="hover:bg-gray-50">
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                  {guest?.fname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {guest?.lname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {guest?.nic || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.eventType}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {new Date(
+                                    item.eventDate
+                                  ).toLocaleDateString()}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-center">
+                                  {item.guests}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 font-medium">
+                                  {eventTotal.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 font-medium">
+                                  {orderTotal.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-purple-600">
+                                  {fullTotal.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan="9"
+                              className="px-4 py-4 text-center text-xs sm:text-sm text-gray-500"
+                            >
+                              No event bookings found for the selected period
+                              and event type
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {selectedReportType === "Blacklisted Customers" && (
+                  <div className="min-w-full inline-block align-middle rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className={`${getTableHeaderColor()}`}>
+                        <tr>
+                          {[
+                            "First Name",
+                            "Last Name",
+                            "Email",
+                            "Reason",
+                            "Status",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="px-2 py-2 sm:px-3 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                            >
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {blacklist.length > 0 ? (
+                          blacklist.map((item, index) => {
+                            return (
+                              <tr key={index} className="hover:bg-gray-50">
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                  {item.fname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.lname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.email}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 text-xs sm:text-sm text-gray-500">
+                                  {item.reason || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap">
+                                  <span
+                                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                      item.status === "Active"
+                                        ? "bg-red-100 text-red-800"
+                                        : "bg-green-100 text-green-800"
+                                    }`}
+                                  >
+                                    {item.status}
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan="5"
+                              className="px-4 py-4 text-center text-xs sm:text-sm text-gray-500"
+                            >
+                              No blacklisted customers found
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {selectedReportType === "Cancelled Bookings" && (
+                  <div className="min-w-full inline-block align-middle rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className={`${getTableHeaderColor()}`}>
+                        <tr>
+                          {[
+                            "First Name",
+                            "Last Name",
+                            "Email",
+                            "Type",
+                            "Reason",
+                            "Status",
+                            "Done By",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="px-2 py-2 sm:px-3 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                            >
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {cancelledBookings.length > 0 ? (
+                          cancelledBookings.map((item, index) => {
+                            const guest = getGuestDetails(item.email);
+                            return (
+                              <tr key={index} className="hover:bg-gray-50">
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                  {guest?.fname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {guest?.lname || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.email}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.type || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 text-xs sm:text-sm text-gray-500">
+                                  {item.reason || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.status || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.doneby || "N/A"}
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan="7"
+                              className="px-4 py-4 text-center text-xs sm:text-sm text-gray-500"
+                            >
+                              No cancelled bookings found
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {selectedReportType === "Rooms" && (
+                  <div className="min-w-full inline-block align-middle rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className={`${getTableHeaderColor()}`}>
+                        <tr>
+                          {[
+                            "Room No",
+                            "Room Type",
+                            "Price Per Night",
+                            "Availability",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="px-2 py-2 sm:px-3 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                            >
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {rooms.length > 0 ? (
+                          rooms.map((item, index) => (
                             <tr key={index} className="hover:bg-gray-50">
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                {item.fname || "N/A"}
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">
+                                {item.roomNo || "N/A"}
                               </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.lname || "N/A"}
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                {item.roomType || "N/A"}
                               </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.email}
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                {(item.pricePerNight || 0).toLocaleString(
+                                  undefined,
+                                  {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  }
+                                )}
                               </td>
-                              <td className="px-4 py-3 text-sm text-gray-500">
-                                {item.reason || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap">
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap">
                                 <span
                                   className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                    item.status === "Active"
-                                      ? "bg-red-100 text-red-800"
-                                      : "bg-green-100 text-green-800"
+                                    item.availabilityStatus === "Available"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
                                   }`}
                                 >
-                                  {item.status}
+                                  {item.availabilityStatus}
                                 </span>
                               </td>
                             </tr>
-                          );
-                        })
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="5"
-                            className="px-4 py-6 text-center text-sm text-gray-500"
-                          >
-                            No blacklisted customers found
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {selectedReportType === "Cancelled Bookings" && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className={`${getTableHeaderColor()}`}>
-                      <tr>
-                        {[
-                          "First Name",
-                          "Last Name",
-                          "Email",
-                          "Type",
-                          "Reason",
-                          "Status",
-                          "Done By",
-                        ].map((header) => (
-                          <th
-                            key={header}
-                            className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
-                          >
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {cancelledBookings.length > 0 ? (
-                        cancelledBookings.map((item, index) => {
-                          const guest = getGuestDetails(item.email);
-                          return (
-                            <tr key={index} className="hover:bg-gray-50">
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                {guest?.fname || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {guest?.lname || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.email}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.type || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 text-sm text-gray-500">
-                                {item.reason || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.status || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.doneby || "N/A"}
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="7"
-                            className="px-4 py-6 text-center text-sm text-gray-500"
-                          >
-                            No cancelled bookings found
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {selectedReportType === "Rooms" && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className={`${getTableHeaderColor()}`}>
-                      <tr>
-                        {[
-                          "Room No",
-                          "Room Type",
-                          "Price Per Night",
-                          "Availability",
-                        ].map((header) => (
-                          <th
-                            key={header}
-                            className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
-                          >
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {rooms.length > 0 ? (
-                        rooms.map((item, index) => (
-                          <tr key={index} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {item.roomNo || "N/A"}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                              {item.roomType || "N/A"}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                              {(item.pricePerNight || 0).toLocaleString(
-                                undefined,
-                                {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                }
-                              )}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <span
-                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                  item.availabilityStatus === "Available"
-                                    ? "bg-green-100 text-green-800"
-                                    : "bg-red-100 text-red-800"
-                                }`}
-                              >
-                                {item.availabilityStatus}
-                              </span>
+                          ))
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan="4"
+                              className="px-4 py-4 text-center text-xs sm:text-sm text-gray-500"
+                            >
+                              No rooms found
                             </td>
                           </tr>
-                        ))
-                      ) : (
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {selectedReportType === "Events" && (
+                  <div className="min-w-full inline-block align-middle rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className={`${getTableHeaderColor()}`}>
                         <tr>
-                          <td
-                            colSpan="4"
-                            className="px-4 py-6 text-center text-sm text-gray-500"
-                          >
-                            No rooms found
-                          </td>
+                          {[
+                            "Event No",
+                            "Event Type",
+                            "Capacity",
+                            "Price",
+                            "Description",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="px-2 py-2 sm:px-3 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                            >
+                              {header}
+                            </th>
+                          ))}
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {selectedReportType === "Events" && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className={`${getTableHeaderColor()}`}>
-                      <tr>
-                        {[
-                          "Event No",
-                          "Event Type",
-                          "Capacity",
-                          "Price",
-                          "Description",
-                        ].map((header) => (
-                          <th
-                            key={header}
-                            className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
-                          >
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {events.filter((item) =>
-                        selectedEventType === "" ||
-                        selectedEventType === "All Event Types"
-                          ? true
-                          : item.eventType === selectedEventType
-                      ).length > 0 ? (
-                        events
-                          .filter((item) =>
-                            selectedEventType === "" ||
-                            selectedEventType === "All Event Types"
-                              ? true
-                              : item.eventType === selectedEventType
-                          )
-                          .map((item, index) => (
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {events.filter((item) =>
+                          selectedEventType === "" ||
+                          selectedEventType === "All Event Types"
+                            ? true
+                            : item.eventType === selectedEventType
+                        ).length > 0 ? (
+                          events
+                            .filter((item) =>
+                              selectedEventType === "" ||
+                              selectedEventType === "All Event Types"
+                                ? true
+                                : item.eventType === selectedEventType
+                            )
+                            .map((item, index) => (
+                              <tr key={index} className="hover:bg-gray-50">
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">
+                                  {item.eventNo || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.eventType || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {item.capacity || "N/A"}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                  {(item.cost || 0).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </td>
+                                <td className="px-2 py-2 sm:px-3 sm:py-3 text-xs sm:text-sm text-gray-500">
+                                  {item.description || "N/A"}
+                                </td>
+                              </tr>
+                            ))
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan="5"
+                              className="px-4 py-4 text-center text-xs sm:text-sm text-gray-500"
+                            >
+                              No events found for the selected event type
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {selectedReportType === "Total Revenue" && (
+                  <div className="min-w-full inline-block align-middle rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className={`${getTableHeaderColor()}`}>
+                        <tr>
+                          {[
+                            "Date",
+                            "Room Revenue",
+                            "Event Revenue",
+                            "Total Revenue",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="px-2 py-2 sm:px-3 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                            >
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {Object.entries(getDailyRevenue()).map(
+                          ([day, revenue], index) => (
                             <tr key={index} className="hover:bg-gray-50">
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {item.eventNo || "N/A"}
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                {`${selectedMonth}/${day}/${selectedYear}`}
                               </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.eventType || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {item.capacity || "N/A"}
-                              </td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                {(item.cost || 0).toLocaleString(undefined, {
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                {revenue.room.toLocaleString(undefined, {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })}
                               </td>
-                              <td className="px-4 py-3 text-sm text-gray-500">
-                                {item.description || "N/A"}
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                {revenue.event.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}
+                              </td>
+                              <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-teal-600">
+                                {revenue.total.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}
                               </td>
                             </tr>
-                          ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="5"
-                            className="px-4 py-6 text-center text-sm text-gray-500"
-                          >
-                            No events found for the selected event type
+                          )
+                        )}
+
+                        <tr className="bg-gray-50 font-medium">
+                          <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                            Monthly Total
+                          </td>
+                          <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                            {Object.values(getDailyRevenue())
+                              .reduce((sum, day) => sum + day.room, 0)
+                              .toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                          </td>
+                          <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                            {Object.values(getDailyRevenue())
+                              .reduce((sum, day) => sum + day.event, 0)
+                              .toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                          </td>
+                          <td className="px-2 py-2 sm:px-3 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-bold text-teal-800">
+                            {Object.values(getDailyRevenue())
+                              .reduce((sum, day) => sum + day.total, 0)
+                              .toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
                           </td>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {/* Total Revenue Report */}
-              {selectedReportType === "Total Revenue" && (
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className={`${getTableHeaderColor()}`}>
-                      <tr>
-                        {[
-                          "Date",
-                          "Room Revenue",
-                          "Event Revenue",
-                          "Total Revenue",
-                        ].map((header) => (
-                          <th
-                            key={header}
-                            className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
-                          >
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {Object.entries(getDailyRevenue()).map(
-                        ([day, revenue], index) => (
-                          <tr key={index} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                              {`${selectedMonth}/${day}/${selectedYear}`}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                              {revenue.room.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                              {revenue.event.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-teal-600">
-                              {revenue.total.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}
-                            </td>
-                          </tr>
-                        )
-                      )}
-
-                      <tr className="bg-gray-50 font-medium">
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                          Monthly Total
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                          {Object.values(getDailyRevenue())
-                            .reduce((sum, day) => sum + day.room, 0)
-                            .toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                          {Object.values(getDailyRevenue())
-                            .reduce((sum, day) => sum + day.event, 0)
-                            .toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-teal-800">
-                          {Object.values(getDailyRevenue())
-                            .reduce((sum, day) => sum + day.total, 0)
-                            .toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>

@@ -133,15 +133,15 @@ function UpdateEvent() {
 
   return (
     <div
-          className="min-h-screen flex flex-col items-center justify-center p-2 my-1 relative"
-          style={{
-            backgroundImage: `url(${guestDetails})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            minHeight: "100vh",
-          }}
-        >
+      className="min-h-screen flex flex-col items-center justify-center p-2 my-1 relative"
+      style={{
+        backgroundImage: `url(${guestDetails})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+      }}
+    >
       <ToastContainer
         position="top-center"
         autoClose={2000}
@@ -151,38 +151,40 @@ function UpdateEvent() {
       {eventData && Object.keys(eventData).length > 0 ? (
         <form
           onSubmit={handleSubmitUpdate}
-          className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden"
+          className="bg-white rounded-xl shadow-xl w-full max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl overflow-hidden mx-2 sm:mx-4"
         >
-          <div className="bg-[#d9232e] p-6 text-white">
-            <h1 className="text-2xl font-bold text-center">
+          <div className="bg-[#d9232e] p-4 sm:p-6 text-white">
+            <h1 className="text-xl sm:text-2xl font-bold text-center">
               Update Event Details
             </h1>
-            <p className="text-center text-white mt-1">
+            <p className="text-center text-white mt-1 text-sm sm:text-base">
               Modify the event information as needed
             </p>
           </div>
 
-          <div className="p-6 space-y-5">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
             {errorMessage && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                <p className="text-red-700 font-medium">{errorMessage}</p>
+              <div className="bg-red-50 border-l-4 border-red-500 p-3 sm:p-4 rounded">
+                <p className="text-red-700 font-medium text-sm sm:text-base">
+                  {errorMessage}
+                </p>
               </div>
             )}
 
             <div className="space-y-1">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm sm:text-base font-medium text-gray-700">
                 Event ID
               </label>
               <input
                 type="text"
                 value={eventData.eventNo}
                 readOnly
-                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none"
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm sm:text-base font-medium text-gray-700">
                 Event Name
               </label>
               <input
@@ -191,15 +193,17 @@ function UpdateEvent() {
                 onChange={changeEventName}
                 value={eventName}
                 readOnly
-                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none"
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-md bg-gray-50 text-gray-600 focus:outline-none"
               />
               {nameErrorMessage && (
-                <p className="text-sm text-red-600">{nameErrorMessage}</p>
+                <p className="text-xs sm:text-sm text-red-600">
+                  {nameErrorMessage}
+                </p>
               )}
             </div>
 
             <div className="space-y-1">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm sm:text-base font-medium text-gray-700">
                 Capacity
               </label>
               <input
@@ -207,62 +211,67 @@ function UpdateEvent() {
                 placeholder="Enter Capacity"
                 onChange={changeCapacity}
                 value={capacity}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               {capacityErrorMessage && (
-                <p className="text-sm text-red-600">{capacityErrorMessage}</p>
+                <p className="text-xs sm:text-sm text-red-600">
+                  {capacityErrorMessage}
+                </p>
               )}
             </div>
 
             <div className="space-y-1">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm sm:text-base font-medium text-gray-700">
                 Cost
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500">Rs</span>
+                  <span className="text-gray-500 text-sm sm:text-base">Rs</span>
                 </div>
                 <input
                   type="text"
                   placeholder="Enter Cost"
                   onChange={changeCost}
                   value={cost}
-                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               {costErrorMessage && (
-                <p className="text-sm text-red-600">{costErrorMessage}</p>
+                <p className="text-xs sm:text-sm text-red-600">
+                  {costErrorMessage}
+                </p>
               )}
             </div>
 
             <div className="space-y-1">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm sm:text-base font-medium text-gray-700">
                 Description
               </label>
               <textarea
                 placeholder="Enter Description"
                 onChange={changeDescription}
                 value={description}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                rows="4"
               />
               {descriptionErrorMessage && (
-                <p className="text-sm text-red-600">
+                <p className="text-xs sm:text-sm text-red-600">
                   {descriptionErrorMessage}
                 </p>
               )}
             </div>
 
-            <div className="flex justify-between pt-4">
+            <div className="flex flex-col sm:flex-row justify-between pt-4 gap-3 sm:gap-0">
               <button
                 type="submit"
-                className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-sm hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all cursor-pointer"
+                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-sm hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all cursor-pointer"
               >
                 Update Event
               </button>
               <button
                 type="button"
                 onClick={handleSubmitDelete}
-                className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg shadow-sm hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all cursor-pointer"
+                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg shadow-sm hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all cursor-pointer"
               >
                 Delete Event
               </button>
@@ -270,16 +279,19 @@ function UpdateEvent() {
           </div>
         </form>
       ) : (
-        <div className="bg-white p-8 rounded-xl shadow-lg text-center">
+        <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg text-center max-w-md mx-2 sm:mx-4">
           <div className="animate-pulse flex flex-col items-center">
-            <div className="h-12 w-12 bg-blue-200 rounded-full mb-4"></div>
-            <div className="h-4 bg-blue-200 rounded w-3/4 mb-2"></div>
-            <div className="h-4 bg-blue-200 rounded w-1/2"></div>
+            <div className="h-10 sm:h-12 w-10 sm:w-12 bg-blue-200 rounded-full mb-3 sm:mb-4"></div>
+            <div className="h-3 sm:h-4 bg-blue-200 rounded w-3/4 mb-2"></div>
+            <div className="h-3 sm:h-4 bg-blue-200 rounded w-1/2"></div>
           </div>
-          <p className="mt-4 text-gray-600">Loading event details...</p>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-600">
+            Loading event details...
+          </p>
         </div>
       )}
     </div>
   );
 }
+
 export default UpdateEvent;

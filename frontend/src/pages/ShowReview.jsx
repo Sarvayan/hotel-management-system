@@ -9,15 +9,15 @@ import { toast } from "react-toastify";
 const formatReviewDate = (utcDate) => {
   const options = {
     timeZone: "Asia/Colombo",
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
   };
-  return new Date(utcDate).toLocaleString('en-GB', options);
+  return new Date(utcDate).toLocaleString("en-GB", options);
 };
 
 function ShowReview() {
@@ -28,7 +28,9 @@ function ShowReview() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/review/getreviews");
+        const response = await axios.get(
+          "http://localhost:4000/api/review/getreviews"
+        );
         if (response.data.success) {
           setReviews(response.data.reviews);
         } else {
@@ -88,8 +90,16 @@ function ShowReview() {
           <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-8">
             <div className="flex">
               <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                <svg
+                  className="h-5 w-5 text-red-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </div>
               <div className="ml-3">
@@ -104,8 +114,8 @@ function ShowReview() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {reviews.length > 0 ? (
               reviews.map((review, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
                 >
                   {/* Review header */}
@@ -147,15 +157,21 @@ function ShowReview() {
 
                     {/* Comment */}
                     <blockquote className="mb-6">
-                      <p className="text-gray-700 italic">
-                        "{review.comment}"
-                      </p>
+                      <p className="text-gray-700 italic">"{review.comment}"</p>
                     </blockquote>
 
                     {/* Date */}
                     <div className="flex items-center text-sm text-gray-500">
-                      <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                      <svg
+                        className="h-4 w-4 mr-1"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                       {formatReviewDate(review.reviewDate)}
                     </div>

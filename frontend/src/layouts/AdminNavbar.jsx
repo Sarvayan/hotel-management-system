@@ -2,9 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-import "react-toastify/dist/ReactToastify.css";
-
-
 function AdminNavbar() {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
@@ -19,6 +16,28 @@ function AdminNavbar() {
   const [eventFetched, setEventFetched] = useState(false);
   const [cleaningFetched, setCleaningFetched] = useState(false);
   const prevNotificationsText = useRef("");
+  const menuRef = useRef(null);
+  const notificationRef = useRef(null);
+
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const extractNotificationText = (elements) =>
     elements.map((el) => el.props.children[0].props.children).join(" | ");
@@ -39,17 +58,17 @@ function AdminNavbar() {
           newNotifications.push(
             <div
               key="room"
-              className="mb-2 p-3 bg-yellow-100 text-yellow-800 rounded shadow"
+              className="mb-2 p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded-r shadow-sm hover:shadow-md transition-shadow duration-200"
             >
-              <p>
-                There are {reservedBookings.length} room bookings waiting for
-                acceptance.
+              <p className="text-sm font-medium text-yellow-800">
+                {reservedBookings.length} room booking
+                {reservedBookings.length !== 1 ? "s" : ""} awaiting approval
               </p>
               <Link
                 to="/bookingrequest"
-                className="inline-block mt-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition duration-300"
+                className="inline-block mt-2 text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-2 py-1 rounded transition duration-200"
               >
-                Go to Booking Requests
+                Review Requests
               </Link>
             </div>
           );
@@ -60,17 +79,17 @@ function AdminNavbar() {
           newNotifications.push(
             <div
               key="event"
-              className="mb-2 p-3 bg-blue-100 text-blue-800 rounded shadow"
+              className="mb-2 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-r shadow-sm hover:shadow-md transition-shadow duration-200"
             >
-              <p>
-                There are {reservedEventBookings.length} event bookings waiting
-                for acceptance.
+              <p className="text-sm font-medium text-blue-800">
+                {reservedEventBookings.length} event booking
+                {reservedEventBookings.length !== 1 ? "s" : ""} pending
               </p>
               <Link
                 to="/bookingrequest"
-                className="inline-block mt-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition duration-300"
+                className="inline-block mt-2 text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded transition duration-200"
               >
-                Go to Booking Requests
+                View Details
               </Link>
             </div>
           );
@@ -82,14 +101,16 @@ function AdminNavbar() {
             newNotifications.push(
               <div
                 key={`clean-${room.roomNo}-${index}`}
-                className="mb-2 p-3 bg-red-100 text-red-800 rounded shadow"
+                className="mb-2 p-3 bg-red-50 border-l-4 border-red-400 rounded-r shadow-sm hover:shadow-md transition-shadow duration-200"
               >
-                <p>Room needs cleaning: Room {room.roomNo}</p>
+                <p className="text-sm font-medium text-red-800">
+                  Cleaning required: Room {room.roomNo}
+                </p>
                 <Link
                   to="/cleaningstatus"
-                  className="inline-block mt-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition duration-300"
+                  className="inline-block mt-2 text-xs bg-red-100 hover:bg-red-200 text-red-800 px-2 py-1 rounded transition duration-200"
                 >
-                  Check Cleaning Status
+                  Update Status
                 </Link>
               </div>
             );
@@ -126,7 +147,9 @@ function AdminNavbar() {
 
           const speak = () => {
             const message = new SpeechSynthesisUtterance(
-              `Hello boss, you have ${notifications.length} notifications`
+              `You have ${notifications.length} new notification${
+                notifications.length !== 1 ? "s" : ""
+              }`
             );
             const femaleVoice = voices.find(
               (voice) => voice.lang === "en-US" && voice.name.includes("Female")
@@ -154,6 +177,7 @@ function AdminNavbar() {
 
   const handleBellClick = () => {
     setShowNotifications((prevState) => !prevState);
+    setShowMenu(false);
   };
 
   const handleVoiceCommand = () => {
@@ -194,29 +218,58 @@ function AdminNavbar() {
 
   return (
     <div className="relative">
-      <nav className="fixed top-0 left-0 w-full rounded-md bg-[#d9232e] shadow-xl z-50 p-3 flex justify-between items-center border-b border-white/10">
-        <Link to="/adminhome">
-          <div className="text-2xl font-bold text-white tracking-tight flex items-center cursor-pointer">
+      {/* Main Navbar */}
+      <nav className="fixed top-0 left-0 w-full bg-gradient-to-r from-red-700 to-red-600 shadow-lg z-50 p-2 md:p-3 flex justify-between items-center border-b border-white/10">
+        {/* Logo/Brand */}
+        <Link to="/adminhome" className="flex items-center">
+          <div className="flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 mr-2"
+              className="h-8 w-8 md:h-10 md:w-10 text-white mr-2"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span className="text-xl md:text-2xl font-bold text-white tracking-tight hidden sm:inline">
+              Anuthama Villa
+            </span>
+          </div>
+        </Link>
+
+        {/* Right Side Controls */}
+        <div className="flex items-center space-x-3 md:space-x-4">
+          {/* Voice Command Button - Hidden on mobile */}
+          <button
+            onClick={handleVoiceCommand}
+            className="hidden md:flex items-center justify-center p-2 rounded-full hover:bg-white/10 transition-colors duration-200 focus:outline-none"
+            aria-label="Voice command"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-white"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
               <path
                 fillRule="evenodd"
-                d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+                d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
                 clipRule="evenodd"
               />
             </svg>
-            Anuthama Villa
-          </div>
-        </Link>
-        <div className="flex items-center space-x-4">
-          <div className="relative group">
+          </button>
+
+          {/* Notifications */}
+          <div className="relative" ref={notificationRef}>
             <button
+              onClick={handleBellClick}
               className="p-2 rounded-full hover:bg-white/10 transition-colors duration-200 relative"
-              onMouseEnter={() => setShowNotifications(true)}
+              aria-label="Notifications"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -233,20 +286,29 @@ function AdminNavbar() {
                 />
               </svg>
               {notifications.length > 0 && (
-                <span className="absolute top-0 right-0 h-5 w-5 bg-yellow-400 rounded-full flex items-center justify-center text-xs font-bold text-red-800 transform group-hover:scale-110 transition-transform">
+                <span className="absolute top-0 right-0 h-5 w-5 bg-yellow-400 rounded-full flex items-center justify-center text-xs font-bold text-red-800 transform transition-transform hover:scale-110">
                   {notifications.length}
                 </span>
               )}
             </button>
 
-            {showNotifications && notifications.length > 0 && (
-              <div
-                className="fixed top-16 right-4 w-80 bg-white rounded-lg shadow-2xl z-50 overflow-hidden animate-fadeIn border border-gray-200"
-                onMouseEnter={() => setShowNotifications(true)}
-                onMouseLeave={() => setShowNotifications(false)}
-              >
-                <div className="bg-[#d9232e] px-4 py-3 flex justify-between items-center">
-                  <h4 className="text-white font-semibold text-sm uppercase tracking-wider">
+            {/* Notifications Dropdown */}
+            {showNotifications && (
+              <div className="fixed md:absolute top-14 md:top-12 right-2 md:right-0 w-80 md:w-96 bg-white rounded-lg shadow-xl z-50 overflow-hidden border border-gray-200 animate-fadeIn">
+                <div className="bg-gradient-to-r from-red-700 to-red-600 px-4 py-3 flex justify-between items-center">
+                  <h4 className="text-white font-semibold text-sm uppercase tracking-wider flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
                     Notifications
                   </h4>
                   <button
@@ -255,7 +317,7 @@ function AdminNavbar() {
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
+                      className="h-5 w-5"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -268,51 +330,107 @@ function AdminNavbar() {
                   </button>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
-                  {notifications.map((notification, index) => (
-                    <div
-                      key={index}
-                      className="p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-150"
-                    >
-                      {notification}
+                  {notifications.length > 0 ? (
+                    notifications.map((notification, index) => (
+                      <div
+                        key={index}
+                        className="p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-150"
+                      >
+                        {notification}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-6 text-center text-gray-500">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-12 w-12 mx-auto text-gray-300 mb-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1}
+                          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <p className="text-sm">No new notifications</p>
                     </div>
-                  ))}
+                  )}
                 </div>
-                <div className="bg-gray-50 px-4 py-2 text-center text-xs text-gray-500 font-medium">
-                  {notifications.length} unread notification
-                  {notifications.length !== 1 ? "s" : ""}
-                </div>
+                {notifications.length > 0 && (
+                  <div className="bg-gray-50 px-4 py-2 text-center text-xs text-gray-500 font-medium">
+                    {notifications.length} unread notification
+                    {notifications.length !== 1 ? "s" : ""}
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          <div className="relative group">
+          {/* Mobile Menu Button */}
+          <div className="relative" ref={menuRef}>
             <button
+              onClick={() => setShowMenu(!showMenu)}
               className="p-2 rounded-full hover:bg-white/10 transition-colors duration-200 focus:outline-none"
-              onMouseEnter={() => setShowMenu(true)}
+              aria-label="Main menu"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7 text-white transform group-hover:rotate-90 transition-transform"
+                className="h-7 w-7 text-white transform transition-transform"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
+                {showMenu ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
               </svg>
             </button>
 
+            {/* Main Menu Dropdown */}
             {showMenu && (
-              <div
-                className="fixed top-16 right-4 w-64 bg-white rounded-lg shadow-2xl z-50 overflow-hidden animate-fadeIn border border-gray-200"
-                onMouseEnter={() => setShowMenu(true)}
-                onMouseLeave={() => setShowMenu(false)}
-              >
-                <div className="py-1">
+              <div className="fixed md:absolute top-14 md:top-12 right-2 w-64 md:w-72 bg-white rounded-lg shadow-xl z-50 overflow-hidden border border-gray-200 animate-fadeIn">
+                {/* User Info */}
+                <div className="bg-gradient-to-r from-red-700 to-red-600 px-4 py-3 flex items-center">
+                  <div className="bg-white/20 rounded-full p-2 mr-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-white font-medium">Admin Dashboard</p>
+                    <p className="text-white/80 text-xs">Administrator</p>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <div className="py-1 divide-y divide-gray-100">
+                  {/* Dashboard */}
                   <Link
                     to="/adminhome"
                     className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
@@ -320,52 +438,58 @@ function AdminNavbar() {
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-2 text-gray-500"
+                      className="h-5 w-5 mr-3 text-gray-500"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
-                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                     </svg>
                     Dashboard
                   </Link>
 
-                  <Link
-                    to="/guestlist"
-                    className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
-                    onClick={() => setShowMenu(false)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-2 text-gray-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                  {/* Guest Management */}
+                  <div>
+                    <Link
+                      to="/guestlist"
+                      className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
+                      onClick={() => setShowMenu(false)}
                     >
-                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                    </svg>
-                    Guest Management
-                  </Link>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-3 text-gray-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                      </svg>
+                      Guest Management
+                    </Link>
+                  </div>
 
-                  <Link
-                    to="/blacklistaccount"
-                    className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
-                    onClick={() => setShowMenu(false)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-2 text-gray-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                  {/* Security Controls */}
+                  <div>
+                    <Link
+                      to="/blacklistaccount"
+                      className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
+                      onClick={() => setShowMenu(false)}
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Security Controls
-                  </Link>
-                  <div className="border-t border-gray-100 mx-3"></div>
-                  {/* Bookings Dropdown */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-3 text-gray-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Security Controls
+                    </Link>
+                  </div>
+
+                  {/* Reservation System */}
                   <div>
                     <button
                       onClick={() => toggleSubMenu("bookings")}
@@ -374,7 +498,7 @@ function AdminNavbar() {
                       <div className="flex items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 mr-2 text-gray-500"
+                          className="h-5 w-5 mr-3 text-gray-500"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -406,65 +530,30 @@ function AdminNavbar() {
                       <div className="bg-gray-50 pl-12">
                         <Link
                           to="/bookingrequest"
-                          className="px-4 py-2 text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 text-sm flex items-center"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150"
                           onClick={() => setShowMenu(false)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
                           Booking Approvals
                         </Link>
                         <Link
                           to="/checkin"
-                          className="px-4 py-2 text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 text-sm flex items-center"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150"
                           onClick={() => setShowMenu(false)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
                           Guest Check-In
                         </Link>
                         <Link
                           to="/checkout"
-                          className="px-4 py-2 text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 text-sm flex items-center"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150"
                           onClick={() => setShowMenu(false)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
                           Guest Check-Out
                         </Link>
                       </div>
                     )}
                   </div>
-                  {/* Rooms Dropdown */}
+
+                  {/* Room Management */}
                   <div>
                     <button
                       onClick={() => toggleSubMenu("rooms")}
@@ -473,7 +562,7 @@ function AdminNavbar() {
                       <div className="flex items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 mr-2 text-gray-500"
+                          className="h-5 w-5 mr-3 text-gray-500"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -504,46 +593,23 @@ function AdminNavbar() {
                       <div className="bg-gray-50 pl-12">
                         <Link
                           to="/manageroom"
-                          className="px-4 py-2 text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 text-sm flex items-center"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150"
                           onClick={() => setShowMenu(false)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          Manage Room
+                          Manage Rooms
                         </Link>
                         <Link
                           to="/cleaningstatus"
-                          className="px-4 py-2 text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 text-sm flex items-center"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150"
                           onClick={() => setShowMenu(false)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
                           Housekeeping
                         </Link>
                       </div>
                     )}
                   </div>
 
+                  {/* Event Management */}
                   <div>
                     <button
                       onClick={() => toggleSubMenu("events")}
@@ -552,7 +618,7 @@ function AdminNavbar() {
                       <div className="flex items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 mr-2 text-gray-500"
+                          className="h-5 w-5 mr-3 text-gray-500"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -583,80 +649,67 @@ function AdminNavbar() {
                       <div className="bg-gray-50 pl-12">
                         <Link
                           to="/addevent"
-                          className="px-4 py-2 text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 text-sm flex items-center"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150"
                           onClick={() => setShowMenu(false)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
                           Create Event
                         </Link>
                         <Link
                           to="/manageevent"
-                          className="px-4 py-2 text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 text-sm flex items-center"
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150"
                           onClick={() => setShowMenu(false)}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
                           Event Calendar
                         </Link>
                       </div>
                     )}
                   </div>
-                  <Link
-                    to="/report"
-                    className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
-                    onClick={() => setShowMenu(false)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-2 text-gray-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+
+                  {/* Reports */}
+                  <div>
+                    <Link
+                      to="/report"
+                      className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
+                      onClick={() => setShowMenu(false)}
                     >
-                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                    </svg>
-                    Report Generation
-                  </Link>
-                  <div className="border-t border-gray-100 mx-3"></div>
-                  <Link
-                    to="/logout"
-                    className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
-                    onClick={() => setShowMenu(false)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-2 text-gray-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-3 text-gray-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Report Generation
+                    </Link>
+                  </div>
+
+                  {/* Sign Out */}
+                  <div>
+                    <Link
+                      to="/logout"
+                      className="px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors duration-150 font-medium flex items-center"
+                      onClick={() => setShowMenu(false)}
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Sign Out
-                  </Link>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-3 text-gray-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Sign Out
+                    </Link>
+                  </div>
                 </div>
               </div>
             )}
@@ -664,6 +717,10 @@ function AdminNavbar() {
         </div>
       </nav>
 
+      {/* Spacer to prevent content from being hidden under fixed navbar */}
+      <div className="h-16 md:h-20"></div>
+
+      {/* Animation Styles */}
       <style jsx>{`
         @keyframes fadeIn {
           from {
@@ -676,7 +733,7 @@ function AdminNavbar() {
           }
         }
         .animate-fadeIn {
-          animation: fadeIn 0.15s ease-out forwards;
+          animation: fadeIn 0.2s ease-out forwards;
         }
       `}</style>
     </div>

@@ -112,143 +112,183 @@ const Checkin = () => {
   };
 
   return (
-     <div
-          className="min-h-screen flex flex-col items-center justify-center p-2 my-1 relative"
-          style={{
-            backgroundImage: `url(${guestDetails})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            minHeight: "100vh",
-          }}
-        >
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden">
-        <div className="bg-[#d9232e] py-6 px-8">
-          <h1 className="text-3xl font-bold text-white text-center tracking-wide">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-2 my-1 relative"
+      style={{
+        backgroundImage: `url(${guestDetails})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+      }}
+    >
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden mx-2 sm:mx-4 md:mx-8">
+        {/* Room Bookings Section */}
+        <div className="bg-[#d9232e] py-4 sm:py-6 px-4 sm:px-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white text-center tracking-wide">
             Room Booked Guest Details
           </h1>
         </div>
 
-        <div className="p-8 overflow-x-auto">
-          <table className="w-full text-sm text-gray-800 bg-white border-separate border-spacing-y-3">
-            <thead>
-              <tr className="bg-blue-100 rounded-md">
-                {[
-                  "First Name",
-                  "Last Name",
-                  "NIC",
-                  "Check-in",
-                  "Check-out",
-                  "Adults",
-                  "Children",
-                  "Nationality",
-                  "Rooms",
-                  "Kitchen",
-                  "Actions",
-                ].map((header) => (
-                  <th key={header} className="p-3 text-left font-semibold">
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {roombookings.map((item, index) => {
-                const guest = getRoomGuestDetails(item.email);
-                return (
-                  <tr
-                    key={index}
-                    className="hover:bg-gray-50 rounded-md transition"
-                  >
-                    <td className="p-3">{guest?.fname || "N/A"}</td>
-                    <td className="p-3">{guest?.lname || "N/A"}</td>
-                    <td className="p-3">{guest?.nic || "N/A"}</td>
-                    <td className="p-3">
-                      {new Date(item.checkin).toLocaleDateString()}
-                    </td>
-                    <td className="p-3">
-                      {new Date(item.checkout).toLocaleDateString()}
-                    </td>
-                    <td className="p-3">{item.adult}</td>
-                    <td className="p-3">{item.children}</td>
-                    <td className="p-3">{item.nationality}</td>
-                    <td className="p-3">{item.noofrooms}</td>
-                    <td className="p-3">{item.kitchen}</td>
-                    <td className="p-3 flex justify-center gap-2">
-                      <button
-                        onClick={() => handleAccept(item._id, "Room")}
-                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition cursor-pointer"
-                      >
-                        Check In
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="p-2 sm:p-4 md:p-8 overflow-x-auto">
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs sm:text-sm md:text-base text-gray-800 bg-white border-separate border-spacing-y-2 sm:border-spacing-y-3">
+              <thead>
+                <tr className="bg-blue-100 rounded-md">
+                  {[
+                    "First Name",
+                    "Last Name",
+                    "NIC",
+                    "Check-in",
+                    "Check-out",
+                    "Adults",
+                    "Children",
+                    "Nationality",
+                    "Rooms",
+                    "Kitchen",
+                    "Actions",
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="p-2 sm:p-3 text-left font-semibold whitespace-nowrap"
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {roombookings.map((item, index) => {
+                  const guest = getRoomGuestDetails(item.email);
+                  return (
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-50 rounded-md transition"
+                    >
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {guest?.fname || "N/A"}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {guest?.lname || "N/A"}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {guest?.nic || "N/A"}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {new Date(item.checkin).toLocaleDateString()}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {new Date(item.checkout).toLocaleDateString()}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.adult}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.children}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.nationality}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.noofrooms}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.kitchen}
+                      </td>
+                      <td className="p-2 sm:p-3 flex justify-center gap-1 sm:gap-2">
+                        <button
+                          onClick={() => handleAccept(item._id, "Room")}
+                          className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-md transition cursor-pointer text-xs sm:text-sm"
+                        >
+                          Check In
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div className="bg-[#d9232e] py-6 px-8 mt-8">
-          <h1 className="text-3xl font-bold text-white text-center tracking-wide">
+        {/* Event Bookings Section */}
+        <div className="bg-[#d9232e] py-4 sm:py-6 px-4 sm:px-8 mt-4 sm:mt-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white text-center tracking-wide">
             Event Booked Guest Details
           </h1>
         </div>
 
-        <div className="p-8 overflow-x-auto">
-          <table className="w-full text-sm text-gray-800 bg-white border-separate border-spacing-y-3">
-            <thead>
-              <tr className="bg-purple-100 rounded-md">
-                {[
-                  "First Name",
-                  "Last Name",
-                  "NIC",
-                  "Event Name",
-                  "Booking Date",
-                  "Check-out Date",
-                  "Guests",
-                  "Budget",
-                  "Actions",
-                ].map((header) => (
-                  <th key={header} className="p-3 text-left font-semibold">
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {eventbookings.map((item, index) => {
-                const guest = getEventGuestDetails(item.email);
-                return (
-                  <tr
-                    key={index}
-                    className="hover:bg-gray-50 rounded-md transition"
-                  >
-                    <td className="p-3">{guest?.fname || "N/A"}</td>
-                    <td className="p-3">{guest?.lname || "N/A"}</td>
-                    <td className="p-3">{guest?.nic || "N/A"}</td>
-                    <td className="p-3">{item.eventType}</td>
-                    <td className="p-3">
-                      {new Date(item.eventDate).toLocaleDateString()}
-                    </td>
-                    <td className="p-3">
-                      {new Date(item.checkoutDate).toLocaleDateString()}
-                    </td>
-                    <td className="p-3">{item.guests}</td>
-                    <td className="p-3">{item.totalAmount}</td>
-                    <td className="p-3 flex justify-center gap-2">
-                      <button
-                        onClick={() => handleAccept(item._id, "Event")}
-                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition cursor-pointer"
-                      >
-                        Check In
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="p-2 sm:p-4 md:p-8 overflow-x-auto">
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs sm:text-sm md:text-base text-gray-800 bg-white border-separate border-spacing-y-2 sm:border-spacing-y-3">
+              <thead>
+                <tr className="bg-purple-100 rounded-md">
+                  {[
+                    "First Name",
+                    "Last Name",
+                    "NIC",
+                    "Event Name",
+                    "Booking Date",
+                    "Check-out Date",
+                    "Guests",
+                    "Budget",
+                    "Actions",
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="p-2 sm:p-3 text-left font-semibold whitespace-nowrap"
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {eventbookings.map((item, index) => {
+                  const guest = getEventGuestDetails(item.email);
+                  return (
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-50 rounded-md transition"
+                    >
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {guest?.fname || "N/A"}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {guest?.lname || "N/A"}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {guest?.nic || "N/A"}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.eventType}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {new Date(item.eventDate).toLocaleDateString()}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {new Date(item.checkoutDate).toLocaleDateString()}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.guests}
+                      </td>
+                      <td className="p-2 sm:p-3 whitespace-nowrap">
+                        {item.totalAmount}
+                      </td>
+                      <td className="p-2 sm:p-3 flex justify-center gap-1 sm:gap-2">
+                        <button
+                          onClick={() => handleAccept(item._id, "Event")}
+                          className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg shadow-md transition cursor-pointer text-xs sm:text-sm"
+                        >
+                          Check In
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

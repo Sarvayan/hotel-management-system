@@ -154,21 +154,22 @@ function BlacklistAccount() {
         minHeight: "100vh",
       }}
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8 text-center ">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+        <div className="mb-4 sm:mb-6 lg:mb-8 text-center">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">
             Guest Management
           </h1>
-          <p className="text-lg text-gray-800 font-bold">
+          <p className="text-sm sm:text-base lg:text-lg text-gray-800 font-bold">
             Manage guest accounts and blacklist inappropriate users
           </p>
         </div>
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-grow">
+
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6 lg:mb-8">
+          <div className="flex flex-col md:flex-row gap-3 sm:gap-4 items-center">
+            <div className="relative w-full md:flex-grow">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
-                  className="w-5 h-5 text-gray-400"
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -187,16 +188,16 @@ function BlacklistAccount() {
                 placeholder="Search by Guest Name"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 pr-4 py-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                className="pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base"
               />
             </div>
 
             <button
               onClick={handleVoiceSearch}
-              className="flex items-center justify-center px-6 py-3 bg-[#d9232e] text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 cursor-pointer"
+              className="w-full md:w-auto flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-[#d9232e] text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 cursor-pointer text-sm sm:text-base"
             >
               <svg
-                className="w-5 h-5 mr-2"
+                className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -214,56 +215,56 @@ function BlacklistAccount() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-md overflow-hidden mb-4 sm:mb-6 lg:mb-8">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     No
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Full Name
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell"
                   >
                     Address
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell"
                   >
                     NIC
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell"
                   >
                     Email
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Phone
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell"
                   >
                     Gender
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 sm:px-3 py-2 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Actions
                   </th>
@@ -274,7 +275,7 @@ function BlacklistAccount() {
                   <tr>
                     <td
                       colSpan="8"
-                      className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-center"
+                      className="px-2 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-500 text-center"
                     >
                       No guests found
                     </td>
@@ -285,47 +286,47 @@ function BlacklistAccount() {
                       key={guest._id}
                       className="hover:bg-gray-50 transition-colors"
                     >
-                      <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {startIndex + index}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-sm text-gray-500">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                            <span className="text-blue-600 font-medium">
+                          <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                            <span className="text-blue-600 font-medium text-xs sm:text-sm">
                               {(guest.fname || "").charAt(0)}
                               {(guest.lname || "").charAt(0)}
                             </span>
                           </div>
-                          <div className="ml-4">
+                          <div className="ml-2 sm:ml-4">
                             <div className="text-sm font-medium text-gray-900">
                               {guest.fname || "N/A"} {guest.lname || "N/A"}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">
                         {guest.address || "N/A"}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
                         {guest.nic || "N/A"}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-sm text-gray-500 hidden lg:table-cell">
                         <a
                           href={`mailto:${guest.email || ""}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 hover:underline text-xs sm:text-sm"
                         >
                           {guest.email || "N/A"}
                         </a>
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-sm text-gray-500">
                         <a
                           href={`tel:${guest.phoneNumber || ""}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 hover:underline text-xs sm:text-sm"
                         >
                           {guest.phoneNumber || "N/A"}
                         </a>
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             guest.gender === "Male"
@@ -338,7 +339,7 @@ function BlacklistAccount() {
                           {guest.gender || "N/A"}
                         </span>
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
                           onClick={() =>
                             handleDelete(
@@ -347,7 +348,7 @@ function BlacklistAccount() {
                               guest.phoneNumber
                             )
                           }
-                          className="px-4 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors cursor-pointer"
+                          className="px-3 py-1 sm:px-4 sm:py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors cursor-pointer text-xs sm:text-sm"
                         >
                           Blacklist
                         </button>
@@ -360,12 +361,12 @@ function BlacklistAccount() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6 rounded-b-lg">
+        <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 bg-white border-t border-gray-200 sm:rounded-b-lg">
           <div className="flex-1 flex justify-between sm:hidden">
             <button
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
-              className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+              className={`relative inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-md ${
                 page === 1
                   ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                   : "bg-white text-gray-700 hover:bg-gray-50"
@@ -373,13 +374,13 @@ function BlacklistAccount() {
             >
               Previous
             </button>
-            <span className="text-sm text-gray-700">
+            <span className="text-xs text-gray-700 mx-2 my-auto">
               Page {page} of {totalPages}
             </span>
             <button
               disabled={page >= totalPages}
               onClick={() => setPage(page + 1)}
-              className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+              className={`relative inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded-md ${
                 page >= totalPages
                   ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                   : "bg-white text-gray-700 hover:bg-gray-50"
@@ -390,7 +391,7 @@ function BlacklistAccount() {
           </div>
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm text-gray-700">
+              <p className="text-xs sm:text-sm text-gray-700">
                 Showing <span className="font-medium">{startIndex}</span> to{" "}
                 <span className="font-medium">{endIndex}</span> of{" "}
                 <span className="font-medium">{totalGuests}</span> guests
@@ -404,7 +405,7 @@ function BlacklistAccount() {
                 <button
                   disabled={page === 1}
                   onClick={() => setPage(page - 1)}
-                  className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
+                  className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-xs sm:text-sm font-medium ${
                     page === 1
                       ? "text-gray-300 cursor-not-allowed"
                       : "text-gray-500 hover:bg-gray-50"
@@ -412,7 +413,7 @@ function BlacklistAccount() {
                 >
                   <span className="sr-only">Previous</span>
                   <svg
-                    className="h-5 w-5"
+                    className="h-4 w-4 sm:h-5 sm:w-5"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -430,7 +431,7 @@ function BlacklistAccount() {
                     <button
                       key={pageNum}
                       onClick={() => setPage(pageNum)}
-                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                      className={`relative inline-flex items-center px-3 py-1 sm:px-4 sm:py-2 border text-xs sm:text-sm font-medium ${
                         page === pageNum
                           ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
                           : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
@@ -443,7 +444,7 @@ function BlacklistAccount() {
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage(page + 1)}
-                  className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
+                  className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-xs sm:text-sm font-medium ${
                     page >= totalPages
                       ? "text-gray-300 cursor-not-allowed"
                       : "text-gray-500 hover:bg-gray-50"
@@ -451,7 +452,7 @@ function BlacklistAccount() {
                 >
                   <span className="sr-only">Next</span>
                   <svg
-                    className="h-5 w-5"
+                    className="h-4 w-4 sm:h-5 sm:w-5"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -485,12 +486,12 @@ function BlacklistAccount() {
               >
                 ​
               </span>
-              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-red-100 sm:mx-0">
                       <svg
-                        className="h-6 w-6 text-red-600"
+                        className="h-5 w-5 sm:h-6 sm:w-6 text-red-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -508,12 +509,12 @@ function BlacklistAccount() {
                         Blacklist Guest Account
                       </h3>
                       <div className="mt-2">
-                        <p className="text-sm text-gray-500 mb-4">
+                        <p className="text-sm text-gray-500 mb-3 sm:mb-4">
                           Please provide a reason for blacklisting this guest.
                           You can either write your own or generate one using
                           AI.
                         </p>
-                        <div className="mb-4">
+                        <div className="mb-3 sm:mb-4">
                           <label
                             htmlFor="summary"
                             className="block text-sm font-medium text-gray-700 mb-1"
@@ -527,16 +528,16 @@ function BlacklistAccount() {
                               value={inputSummary}
                               onChange={(e) => setInputSummary(e.target.value)}
                               placeholder="Example: 'Fake documents provided'"
-                              className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 p-2 border"
+                              className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-md text-sm border-gray-300 p-2 border"
                             />
                           </div>
                         </div>
                         <button
                           onClick={generateDescription}
-                          className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mb-4"
+                          className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mb-3 sm:mb-4"
                         >
                           <svg
-                            className="w-5 h-5 mr-2"
+                            className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -550,7 +551,7 @@ function BlacklistAccount() {
                           </svg>
                           Generate AI Description
                         </button>
-                        <div className="mb-4">
+                        <div className="mb-3 sm:mb-4">
                           <label
                             htmlFor="reason"
                             className="block text-sm font-medium text-gray-700 mb-1"
@@ -559,10 +560,10 @@ function BlacklistAccount() {
                           </label>
                           <textarea
                             id="reason"
-                            rows="4"
+                            rows="3"
                             value={reason}
                             onChange={(e) => setReason(e.target.value)}
-                            className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                            className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full text-sm border-gray-300 rounded-md p-2 border"
                             placeholder="Generated or custom reason will appear here..."
                           ></textarea>
                         </div>
