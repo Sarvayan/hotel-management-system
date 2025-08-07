@@ -23,6 +23,7 @@ function RoomBooking() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [isAvailable, setIsAvailable] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [noErrors, setNoErrors] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,12 +74,14 @@ function RoomBooking() {
       today.setHours(10, 0, 0, 0);
       if (selectedDate < today) {
         error = "Check-in date cannot be in the past";
+        setNoErrors(noErrors + 1);
       }
     } else if (name === "checkout" && formData.checkin) {
       const selectedDate = new Date(value);
       const checkinDate = new Date(formData.checkin);
       if (selectedDate <= checkinDate) {
         error = "Checkout must be after check-in";
+        setNoErrors(noErrors + 1);
       }
     } else if (name === "noofrooms") {
       if (parseInt(value) > availableRooms.length) {
@@ -131,17 +134,20 @@ function RoomBooking() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Validate all fields
-    const isValid = Object.keys(formData).every((key) => {
-      if (key === "children" || key === "kitchen") return true;
-      if (!formData[key]) {
-        setErrors((prev) => ({ ...prev, [key]: "This field is required" }));
-        return false;
+    let valid = true;
+
+    // Run validateField on all fields
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key !== "children" && key !== "kitchen") {
+        const isFieldValid = validateField(key, value);
+        if (!isFieldValid) valid = false;
       }
-      return true;
     });
 
-    if (!isValid) {
+    const hasErrors = Object.values(errors).some((err) => err !== "");
+
+    if (!valid || hasErrors) {
+      toast.error("Please enter valid details");
       setIsLoading(false);
       return;
     }
@@ -165,7 +171,7 @@ function RoomBooking() {
         }
       );
 
-      if (!availabilityResponse.data.success) {
+      if (availabilityResponse.data.success === false) {
         setIsAvailable(false);
         toast.error("Selected rooms are not available for these dates");
         setIsLoading(false);
@@ -469,8 +475,6 @@ function RoomBooking() {
                           <option value="">Select Room Type</option>
                           <option value="Single">Single Room</option>
                           <option value="Double">Double Room</option>
-                          <option value="Deluxe">Deluxe Suite</option>
-                          <option value="Executive">Executive Suite</option>
                         </select>
                         {errors.roomType && (
                           <p className="mt-1 text-sm text-red-600">

@@ -39,7 +39,7 @@ function LandingPage() {
               {/* Heading */}
               <div className="text-center mb-8">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-800 mb-4 font-serif tracking-tight">
-                  Anuthama Villa
+                  WeAre Villa
                 </h1>
                 <div className="w-24 h-1 bg-[#d9232e] mx-auto mb-6"></div>
                 <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">

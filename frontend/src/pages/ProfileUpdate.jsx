@@ -15,18 +15,19 @@ function ProfileUpdate() {
     lname: user.lname || "",
     address: user.address || "",
     phonenum: user.phoneNumber || "",
-    gender: user.gender || ""
+    gender: user.gender || "",
   });
   const [errorMessage, setErrorMessage] = useState("");
 
   const nameRegex = /^[A-Za-z]{2,50}$/;
   const phoneRegex = /^\+94[1-9][0-9]{8}$/;
+  const addressRegex = /^\d+\s[A-Za-z0-9\s,.#-]+$/;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -35,7 +36,7 @@ function ProfileUpdate() {
     setErrorMessage("");
 
     // Validation checks
-    if (Object.values(formData).some(field => field.trim() === "")) {
+    if (Object.values(formData).some((field) => field.trim() === "")) {
       setErrorMessage("All fields are required");
       return;
     }
@@ -47,6 +48,11 @@ function ProfileUpdate() {
 
     if (!nameRegex.test(formData.lname)) {
       setErrorMessage("Invalid Last Name (2-50 letters only)");
+      return;
+    }
+
+    if (!addressRegex.test(address)) {
+      setAddressErrorMessage("❌ Invalid Address format!");
       return;
     }
 
@@ -66,7 +72,7 @@ function ProfileUpdate() {
         formData,
         { withCredentials: true }
       );
-      
+
       if (response.data === true) {
         toast.success("Profile Updated Successfully!", {
           position: "top-center",
@@ -91,7 +97,7 @@ function ProfileUpdate() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background with subtle pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-gray-100 opacity-95"></div>
-      <div 
+      <div
         className="absolute inset-0 w-full h-full opacity-5"
         style={{
           backgroundImage: `url(${adminBg})`,
@@ -181,7 +187,9 @@ function ProfileUpdate() {
                     onChange={handleChange}
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Format: +94XXXXXXXXX</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Format: +94XXXXXXXXX
+                </p>
               </div>
 
               {/* Gender */}
@@ -195,7 +203,9 @@ function ProfileUpdate() {
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-transparent transition-all duration-200 appearance-none bg-white bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiAjdjQgdjR2NCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==')] bg-no-repeat bg-[right_1rem_center]"
                 >
-                  <option value="" disabled>Select your gender</option>
+                  <option value="" disabled>
+                    Select your gender
+                  </option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>

@@ -64,10 +64,14 @@ function EventBooking() {
 
   function changeEventDate(event) {
     const selectedDate = new Date(event.target.value);
+    const selectedCheckoutDate = new Date(checkoutDate);
     const today = new Date();
     today.setHours(10, 0, 0, 0);
     if (selectedDate < today) {
       setDateErrorMessage("❌ Event date cannot be in the past!");
+      setEventDate("");
+    } else if (checkoutDate && selectedDate > selectedCheckoutDate) {
+      setDateErrorMessage("❌ Check-in date must be before the checkout date!");
       setEventDate("");
     } else {
       setDateErrorMessage("");
